@@ -9,7 +9,7 @@ export const metadata = {
       { url: "/favicon.svg", type: "image/svg+xml" },
       { url: "/icon.svg", type: "image/svg+xml" },
     ],
-    apple: "/apple-touch-icon_UmekiHub.png",
+    apple: "/apple-touch-icon.png",
   },
 };
 

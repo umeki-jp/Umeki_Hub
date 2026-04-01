@@ -19,7 +19,7 @@ export default function HomePage() {
       <section className="text-center py-12 bg-gradient-to-br from-slate-800 via-slate-900 to-black text-white rounded-3xl shadow-2xl px-4">
         <h2 className="text-4xl font-extrabold mb-4 tracking-tight">Project Launcher</h2>
         <p className="text-slate-400 max-w-2xl mx-auto text-lg">
-          仕事、日常の最適化を目指し、シンプルかつ直感的なシステムを提供しています。
+          個人開発と業務システムの改善に取り組むプロジェクトのポータルサイト。シンプルで再現性のあるアプリを継続的に開発中。
         </p>
       </section>
 
