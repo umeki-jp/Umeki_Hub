@@ -9,7 +9,7 @@ export default function PolicyPage() {
         <section>
           <h2 className="text-xl font-bold mb-3 text-slate-900">コンセプト</h2>
           <p>
-            当サイト「Hub | Official Portal」は、日本を拠点に、個人開発と業務システムの改善に取り組むプロジェクトのポータルサイトです。
+            当サイト「Official Portal」は、日本を拠点に、個人開発と業務システムの改善に取り組むプロジェクトのポータルサイトです。
             
           </p>
         </section>

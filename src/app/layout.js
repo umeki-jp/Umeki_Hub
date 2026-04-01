@@ -2,14 +2,31 @@ import Link from "next/link";
 import "./globals.css";
 
 export const metadata = {
-  title: "Hub | Official Portal",
+  // ブラウザのタブや検索結果に表示されるタイトル
+  title: "Umeki_Hub | Official Portal", 
+  
+  // サイトの説明文
   description: "日本を拠点に、個人開発と業務システムの改善に取り組むプロジェクトのポータルサイト。シンプルで再現性のあるアプリを継続的に開発中。",
+  
+  // アイコンの設定
   icons: {
+    // ブラウザのタブ用（Favicon）: 1つに絞ることでfavicon.svgを強制します
     icon: [
-      { url: "/favicon.svg", type: "image/svg+xml" },
-      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/favicon.svg", type: "image/svg+xml" }
     ],
-    apple: "/apple-touch-icon.png",
+    
+    // iPhone等のホーム画面用アイコン
+    apple: [
+      { url: "/apple-touch-icon" }
+    ],
+    
+    // その他のアイコン資産（必要に応じて）
+    other: [
+      {
+        rel: "mask-icon",
+        url: "/icon.svg",
+      },
+    ],
   },
 };
 
@@ -21,7 +38,7 @@ export default function RootLayout({ children }) {
         <header className="bg-slate-900 text-white shadow-md p-4 sticky top-0 z-50">
           <div className="container mx-auto flex justify-between items-center">
             <Link href="/" className="text-xl font-bold flex items-center gap-2 hover:opacity-80 transition">
-              🌏 Hub | Official Portal
+              🌏 Official Portal
             </Link>
             <nav className="flex gap-6 text-sm font-medium">
               <Link href="/" className="hover:text-blue-400 transition">Dashboard</Link>
