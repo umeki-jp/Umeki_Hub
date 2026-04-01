@@ -2,7 +2,7 @@ import Link from "next/link";
 import "./globals.css";
 
 export const metadata = {
-  title: "Umeki_Hub | Official Portal",
+  title: "Hub | Official Portal",
   description: "日本を拠点に、個人開発と業務システムの改善に取り組むプロジェクトのポータルサイト。シンプルで再現性のあるアプリを継続的に開発中。",
   icons: {
     icon: [
