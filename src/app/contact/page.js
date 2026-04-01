@@ -48,7 +48,7 @@ export default function ContactPage() {
             id="name"
             required
             className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
-            placeholder="梅木 久宜"
+            placeholder="Your Name"
           />
         </div>
 

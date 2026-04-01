@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Umeki_Hub
 
-## Getting Started
+日本を拠点に、個人開発と業務システムの改善に取り組むプロジェクトのポータルサイトです。
+危機管理・業務設計の経験を活かし、シンプルで再現性のあるアプリケーションを継続的に公開します。
 
-First, run the development server:
+## 🚀 技術スタック
+- **Framework**: Next.js 15+ (App Router)
+- **Styling**: Tailwind CSS v4 (with Typography plugin)
+- **Content**: Markdown (gray-matter + marked)
+- **Deployment**: Vercel
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 📂 フォルダ構造
+- `src/app/`: ページのルーティングとUI
+- `public/data/`: `apps.json` (アプリ一覧データベース)
+- `public/assets/docs/`: 手順書用画像
+- `content/docs/`: Markdown形式の利用方法・ドキュメント
+- `src/lib/`: Markdown解析などの共通ロジック
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📝 サービス追加の手順（備忘録）
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+新しいアプリやプロジェクトをポータルに追加する際は、以下のステップで行います。
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### ステップ1: JSONへの登録
+`public/data/apps.json` を開き、新しいオブジェクトを追加します。
+- `id`: 重複しないID（例: `My_New_App`）
+- `docPath`: `/docs/` + ID（例: `/docs/My_New_App`）
+- `url`: アプリ自体の公開URL（未完成なら空文字）
 
-## Learn More
+### ステップ2: ドキュメントの作成
+`content/docs/` フォルダ内に `(ID名).md` ファイルを作成します。
+※ファイル名はIDと**大文字小文字・アンダースコア含め完全に一致**させてください。
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```markdown
+---
+title: "アプリ名 利用方法"
+date: "2026-XX-XX"
+---
+## 概要
+ここに説明文を書く。画像は `/assets/docs/` に置いて参照可能。
