@@ -32,7 +32,7 @@ export default function ProfilePage() {
             <tbody className="divide-y divide-slate-200">
               <tr>
                 <th className="py-4 font-semibold text-slate-700 w-1/3">事業者の名称</th>
-                <td className="py-4 text-slate-600">Umeki_Hub 運営事務局</td>
+                <td className="py-4 text-slate-600">Hub | Official Portal 運営事務局</td>
               </tr>
               <tr>
                 <th className="py-4 font-semibold text-slate-700">代表者または責任者</th>

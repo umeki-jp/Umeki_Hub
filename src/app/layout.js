@@ -21,7 +21,7 @@ export default function RootLayout({ children }) {
         <header className="bg-slate-900 text-white shadow-md p-4 sticky top-0 z-50">
           <div className="container mx-auto flex justify-between items-center">
             <Link href="/" className="text-xl font-bold flex items-center gap-2 hover:opacity-80 transition">
-              🌏 Umeki_Hub
+              🌏 Hub | Official Portal
             </Link>
             <nav className="flex gap-6 text-sm font-medium">
               <Link href="/" className="hover:text-blue-400 transition">Dashboard</Link>
@@ -53,7 +53,7 @@ export default function RootLayout({ children }) {
               <Link href="/contact" className="hover:text-blue-600 transition">お問い合わせ</Link>
             </div>
             <p className="text-xs text-slate-400">
-              &copy; {new Date().getFullYear()} U1344 / Umeki_Hub. All rights reserved.
+              &copy; {new Date().getFullYear()} U1344 / Official Portal. All rights reserved.
             </p>
           </div>
         </footer>

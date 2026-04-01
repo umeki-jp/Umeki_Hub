@@ -39,7 +39,7 @@ export default function HomePage() {
               </span>
             </div>
             
-            <h3 className="text-xl font-bold mb-2 group-hover:text-blue-600 transition-colors">{app.title}</h3>
+            <h3 className="text-xl font-bold mb-2 text-slate-900">{app.title}</h3>
             <p className="text-sm text-slate-500 mb-8 leading-relaxed flex-grow">{app.description}</p>
             
             <div className="flex flex-col gap-3 mt-auto">
