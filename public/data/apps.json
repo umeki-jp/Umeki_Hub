@@ -1,12 +1,12 @@
 [
   {
-    "id": "portal_LinkMaster",
+    "id": "portal-link-master",
     "title": "Portal_LinkMaster",
     "description": "ブラウザ完結の超高速・軽量な個人用リンク管理ポータル。DB不要で即利用可能。",
     "category": "Tools",
     "status": "Stable",
     "url": "https://portal-link-master.vercel.app/",
-    "docPath": "/docs/portal_LinkMaster",
+    "docPath": "/docs/Portal_LinkMaster",
     "updatedAt": "2026-03-27"
   },
   {
