@@ -15,11 +15,11 @@ export default function HomePage() {
 
   return (
     <div className="space-y-10">
-      {/* ヒーローセクション: 自灯明プロジェクトのミッションを反映 */}
+      {/* ヒーローセクション */}
       <section className="text-center py-12 bg-gradient-to-br from-slate-800 via-slate-900 to-black text-white rounded-3xl shadow-2xl px-4">
         <h2 className="text-4xl font-extrabold mb-4 tracking-tight">Project Launcher</h2>
         <p className="text-slate-400 max-w-2xl mx-auto text-lg">
-          「計算」をAIに、「決断」を人間に。数学的論理に基づき、人間本来の判断力を再定義・強化するプロジェクト群。
+          仕事、日常の最適化を目指し、シンプルかつ直感的なシステムを提供しています。
         </p>
       </section>
 
