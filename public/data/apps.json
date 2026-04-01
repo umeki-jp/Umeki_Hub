@@ -1,0 +1,22 @@
+[
+  {
+    "id": "portal_LinkMaster",
+    "title": "Portal_LinkMaster",
+    "description": "ブラウザ完結の超高速・軽量な個人用リンク管理ポータル。DB不要で即利用可能。",
+    "category": "Tools",
+    "status": "Stable",
+    "url": "https://portal-link-master.vercel.app/",
+    "docPath": "/docs/portal_LinkMaster",
+    "updatedAt": "2026-03-27"
+  },
+  {
+    "id": "KeyLine",
+    "title": "KeyLine",
+    "description": "日本民間危機管理態勢判定システム。客観的指標に基づき有事の行動を支援。",
+    "category": "Official",
+    "status": "Beta",
+    "url": "",
+    "docPath": "/docs/keyLine",
+    "updatedAt": "2026-04-01"
+  }
+]
