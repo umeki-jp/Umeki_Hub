@@ -12,7 +12,7 @@ export default function ClientLayout({ children }) {
 }
 
 function LayoutContent({ children }) {
-  const { lang } = useLanguage();
+  const { lang, changeLanguage } = useLanguage();
   const t = APP_DICTS.UI_TEXT;
 
   return (
@@ -22,7 +22,15 @@ function LayoutContent({ children }) {
           <Link href="/" className="text-xl font-black tracking-tighter hover:text-blue-400 transition">
             Umeki_Apps
           </Link>
-          <nav className="flex gap-6 text-sm font-bold">
+          <nav className="flex items-center gap-6 text-sm font-bold">
+            <button
+              type="button"
+              onClick={() => changeLanguage(lang === "ja" ? "en" : "ja")}
+              className="px-2 py-1 rounded-md border border-slate-600 text-slate-200 hover:text-white hover:border-slate-400 transition"
+              aria-label={lang === "ja" ? "Switch language to English" : "言語を日本語に切り替え"}
+            >
+              {lang === "ja" ? "JA/EN" : "EN/JA"}
+            </button>
             <Link href="/profile" className="hover:text-blue-400 transition">
               {t.NAV.PROFILE[lang]}
             </Link>

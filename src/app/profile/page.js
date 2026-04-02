@@ -66,13 +66,13 @@ export default function ProfilePage() {
                 href="https://github.com/umeki-jp" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="hover:opacity-70 transition-opacity bg-white p-1 rounded-md"
+                className="inline-flex items-center justify-center hover:opacity-70 transition-opacity"
               >
                 <Image 
-                  src="/assets/images/GitHub_Invertocat_Black_Clearspace.png" 
+                  src="/assets/images/GitHub_Invertocat_White_Clearspace.png" 
                   alt="GitHub" 
-                  width={24} 
-                  height={24} 
+                  width={32} 
+                  height={32} 
                   className="object-contain"
                 />
               </a>
@@ -80,13 +80,13 @@ export default function ProfilePage() {
                 href="https://x.com/ume1344" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="hover:opacity-70 transition-opacity bg-white p-1 rounded-md"
+                className="inline-flex items-center justify-center hover:opacity-70 transition-opacity"
               >
                 <Image 
-                  src="/assets/images/x-logo-black.png" 
+                  src="/assets/images/logo-white.png" 
                   alt="X (Twitter)" 
-                  width={20} 
-                  height={20} 
+                  width={24} 
+                  height={24} 
                   className="object-contain"
                 />
               </a>
@@ -109,7 +109,7 @@ export default function ProfilePage() {
                 [profileT.LEGAL.ADDRESS_LABEL[lang], profileT.LEGAL.ADDRESS_VALUE[lang]],
                 [profileT.LEGAL.CONTACT_LABEL[lang], (
                   <div key="contact">
-                    <p>Email: support@example.com</p>
+                    <p>Email: umeki_apps@j-circon.jp</p>
                     <p className="mt-1 text-xs text-slate-200">
                       {profileT.LEGAL.CONTACT_FORM[lang]}
                       <Link href="/contact" className="text-blue-400 ml-1 hover:underline">
