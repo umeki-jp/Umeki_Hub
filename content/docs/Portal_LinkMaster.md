@@ -14,8 +14,8 @@ usageHtml:
 # 03. 利用方法詳細
 steps:
   - title: 
-      ja: "ログイン画面へのアクセス"
-      en: "Accessing the Login Screen"
+      ja: "LinkMasterをブラウザで開く"
+      en: "Open LinkMaster with your browser"
     image: "step1.png"
     description: 
       ja: "ブラウザから指定のURLを開き、初期設定を行います。"
@@ -25,6 +25,6 @@ steps:
       en: "Adding a Link"
     image: "step2.png"
     description: 
-      ja: "右下の「＋」ボタンから新しいリンクを登録できます。"
-      en: "You can register a new link using the '+' button at the bottom right."
+      ja: "右上の「＋新規リンク」ボタンから新しいリンクを登録できます。"
+      en: "You can register a new link using the '+' button at the up right."
 ---

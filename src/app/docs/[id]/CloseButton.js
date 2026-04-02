@@ -1,7 +1,10 @@
 "use client";
 import { APP_DICTS } from '@/utils/constants';
+import { useLanguage } from '@/context/LanguageContext';
 
-export default function CloseButton({ lang, isTextMode = true }) {
+export default function CloseButton({ lang: fallbackLang, isTextMode = true }) {
+  const languageState = useLanguage();
+  const lang = languageState?.lang || fallbackLang || "ja";
   const t = APP_DICTS.UI_TEXT;
   const handleClose = () => {
     window.close();
