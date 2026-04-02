@@ -2,9 +2,13 @@
   {
     "id": "portal-link-master",
     "title": "Portal_LinkMaster",
-    "description": "ブラウザ完結の超高速・軽量な個人用リンク管理ポータル。DB不要で即利用可能。",
-    "category": "Tools",
-    "status": "Stable",
+    "description": {
+      "ja": "ブラウザ完結の超高速・軽量な個人用リンク管理ポータル。DB不要で即利用可能。",
+      "en": "Ultra-fast and lightweight personal link management portal that runs entirely in the browser. No DB required."
+    },
+    "categories": ["TOOL", "DATA"],
+    "platforms": ["WEB"],
+    "license": "Free",
     "url": "https://portal-link-master.vercel.app/",
     "docPath": "/docs/Portal_LinkMaster",
     "updatedAt": "2026-03-27"
@@ -12,9 +16,13 @@
   {
     "id": "KeyLine",
     "title": "KeyLine",
-    "description": "日本民間危機管理態勢判定システム。客観的指標に基づき有事の行動を支援。",
-    "category": "Official",
-    "status": "Beta",
+    "description": {
+      "ja": "日時業務ライン管理、研修・教育、引継ぎ、人員配置、BCPに対応。",
+      "en": "Supports daily business line management, training/education, handovers, personnel allocation, and BCP."
+    },
+    "categories": ["BUSINESS", "EDUCATION", "DATA"],
+    "platforms": ["WEB", "DESKTOP"],
+    "license": "Free / Pro",
     "url": "",
     "docPath": "/docs/keyLine",
     "updatedAt": "2026-04-01"

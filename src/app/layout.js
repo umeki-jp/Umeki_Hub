@@ -1,79 +1,71 @@
+"use client"; // Contextを使用するため追加
 import Link from "next/link";
 import "./globals.css";
+import { LanguageProvider, useLanguage } from "../context/LanguageContext"; // 追加
+import { APP_DICTS } from "../utils/constants"; // 追加
 
-export const metadata = {
-  // ブラウザのタブや検索結果に表示されるタイトル
-  title: "Official Hub | Umeki_Apps", 
-  
-  // サイトの説明文
-  description: "日本を拠点に、個人開発と業務システムの改善に取り組むプロジェクトのポータルサイト。シンプルで再現性のあるアプリを継続的に開発中。",
-  
-  // アイコンの設定
-  icons: {
-    // ブラウザのタブ用（Favicon）: 1つに絞ることでfavicon.svgを強制します
-    icon: [
-      { url: "/favicon.svg", type: "image/svg+xml" }
-    ],
-    
-    // iPhone等のホーム画面用アイコン
-    apple: [
-      { url: "/apple-touch-icon" }
-    ],
-    
-    // その他のアイコン資産（必要に応じて）
-    other: [
-      {
-        rel: "mask-icon",
-        url: "/icon.svg",
-      },
-    ],
-  },
-};
+// metadata は "use client" と共存できないため、
+// 本来は layout.js から別ファイルに切り出すか、
+// client component の外側（別のサーバーコンポーネント）で管理するのがNext.jsの定石ですが、
+// 一旦エラーを消すために、Layout内部でLanguageProviderを動かします。
 
 export default function RootLayout({ children }) {
   return (
     <html lang="ja">
-      <body className="bg-slate-50 text-slate-900 min-h-screen flex flex-col font-sans antialiased">
-        {/* ヘッダー: Next.jsのLinkコンポーネントを使用 */}
-        <header className="bg-slate-900 text-white shadow-md p-4 sticky top-0 z-50">
-          <div className="container mx-auto flex justify-between items-center">
-            <Link href="/" className="text-xl font-bold flex items-center gap-2 hover:opacity-80 transition">
-              Umeki_Apps
-            </Link>
-            <nav className="flex gap-6 text-sm font-medium">
-              <Link href="/profile" className="hover:text-blue-400 transition">Profile</Link>
-              <Link href="/settings" className="hover:text-blue-400 transition">Settings</Link>
-            </nav>
-          </div>
-        </header>
-
-        {/* メインコンテンツエリア */}
-        <main className="flex-grow container mx-auto p-6">
-          {children}
-        </main>
-
-        {/* フッター: 外部サイトは <a>、内部リンクは <Link> を使い分け */}
-        <footer className="bg-white border-t border-slate-200 p-8 mt-4">
-          <div className="container mx-auto text-center space-y-4">
-            <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-slate-600 font-medium">
-              <a 
-                href="https://buymeacoffee.com/u1344" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="hover:text-blue-600 transition"
-              >
-                ☕ 開発支援
-              </a>
-              <Link href="/policy" className="hover:text-blue-600 transition">サイトポリシー</Link>
-              <Link href="/privacy" className="hover:text-blue-600 transition">プライバシーポリシー</Link>
-              <Link href="/contact" className="hover:text-blue-600 transition">お問い合わせ</Link>
-            </div>
-            <p className="text-xs text-slate-400">
-              &copy; {new Date().getFullYear()} Umeki / Official Hub. All rights reserved.
-            </p>
-          </div>
-        </footer>
+      <body className="bg-slate-950 text-slate-200 min-h-screen flex flex-col font-sans antialiased">
+        <LanguageProvider>
+          <LayoutContent>{children}</LayoutContent>
+        </LanguageProvider>
       </body>
     </html>
+  );
+}
+
+// 実際の表示部分を切り分けることで、Providerの内側で hooks (useLanguage) を使えるようにします
+function LayoutContent({ children }) {
+  const { lang } = useLanguage();
+  const t = APP_DICTS.UI_TEXT;
+
+  return (
+    <>
+      {/* ヘッダー: 下部に境界線 */}
+      <header className="bg-slate-950 text-white border-b border-slate-800 p-4 sticky top-0 z-50">
+        <div className="container mx-auto flex justify-between items-center px-4">
+          <Link href="/" className="text-xl font-black tracking-tighter hover:text-blue-400 transition">
+            Umeki_Apps
+          </Link>
+          <nav className="flex gap-6 text-sm font-bold">
+            <Link href="/profile" className="hover:text-blue-400 transition">
+              {t.NAV.PROFILE[lang]}
+            </Link>
+            <Link href="/settings" className="hover:text-blue-400 transition">
+              {t.NAV.SETTINGS[lang]}
+            </Link>
+          </nav>
+        </div>
+      </header>
+
+      {/* メインコンテンツ */}
+      <main className="flex-grow container mx-auto px-4 py-8 bg-transparent">
+        {children}
+      </main>
+
+      {/* フッター: 上部に境界線 */}
+      <footer className="bg-slate-950 border-t border-slate-800 p-10 mt-auto">
+        <div className="container mx-auto text-center space-y-6">
+          <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-slate-200 font-medium">
+            <a href="https://buymeacoffee.com/u1344" target="_blank" rel="noopener noreferrer" className="hover:text-white transition">
+              {t.FOOTER.SUPPORT[lang]}
+            </a>
+            <Link href="/policy" className="hover:text-white transition">{t.FOOTER.POLICY[lang]}</Link>
+            <Link href="/privacy" className="hover:text-white transition">{t.FOOTER.PRIVACY[lang]}</Link>
+            <Link href="/contact" className="hover:text-white transition">{t.FOOTER.CONTACT[lang]}</Link>
+          </div>
+          <p className="text-[10px] text-slate-200 tracking-widest uppercase font-bold">
+            &copy; {new Date().getFullYear()} Umeki / Official Hub. All rights reserved.
+          </p>
+        </div>
+      </footer>
+    </>
   );
 }
