@@ -33,7 +33,7 @@ export default async function DocPage({ params }) {
 
       <article className="space-y-20">
         {/* タイトルヘッダー */}
-        <header className="border-b border-slate-800 pb-10">
+        <header className="border-b border-slate-200 pb-10">
           <h1 className="text-4xl md:text-5xl font-black text-white mb-4 tracking-tighter">
             {getTrans(docData.title)}
           </h1>

@@ -46,8 +46,10 @@ function LayoutContent({ children }) {
       </header>
 
       {/* メインコンテンツ */}
-      <main className="flex-grow container mx-auto px-4 py-8 bg-transparent">
-        {children}
+      <main className="flex-grow container mx-auto px-4 py-8 flex flex-col justify-center bg-transparent">
+        <div className="w-full">
+          {children}
+        </div>
       </main>
 
       {/* フッター: 上部に境界線 */}

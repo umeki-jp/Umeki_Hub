@@ -42,8 +42,8 @@ export default function ProfilePage() {
   return (
     <div className="max-w-4xl mx-auto space-y-10 py-6 text-slate-200">
       {/* 自己紹介セクション */}
-      <section className="bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-xl">
-        <h2 className="text-2xl font-bold mb-6 border-b border-slate-800 pb-2 text-white">
+      <section className="bg-slate-900 border border-slate-200 rounded-2xl p-8 shadow-xl">
+        <h2 className="text-2xl font-bold mb-6 border-b border-slate-200 pb-2 text-white">
           {profileT.TITLE[lang]}
         </h2>
         <div className="flex flex-col md:flex-row gap-8 items-center md:items-start">
@@ -96,8 +96,8 @@ export default function ProfilePage() {
       </section>
 
       {/* 特定商取引法に基づく表記セクション */}
-      <section className="bg-slate-900 border border-slate-800 rounded-2xl p-8 shadow-xl">
-        <h2 className="text-xl font-bold mb-6 text-white border-b border-slate-800 pb-2">
+      <section className="bg-slate-900 border border-slate-200 rounded-2xl p-8 shadow-xl">
+        <h2 className="text-xl font-bold mb-6 text-white border-b border-slate-200 pb-2">
           {profileT.LEGAL_TITLE[lang]}
         </h2>
         <div className="overflow-x-auto">

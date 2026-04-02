@@ -41,7 +41,7 @@ export default function PrivacyPage() {
 
   return (
     <div className="max-w-3xl mx-auto py-10 px-4 text-slate-200">
-      <h1 className="text-3xl font-black mb-8 border-b border-slate-800 pb-4 text-white tracking-tight">
+      <h1 className="text-3xl font-black mb-8 border-b border-slate-200 pb-4 text-white tracking-tight">
         {privacyT.TITLE[lang]}
       </h1>
       
@@ -78,7 +78,7 @@ export default function PrivacyPage() {
           </ul>
         </section>
 
-        <section className="p-6 bg-slate-900 border border-slate-800 rounded-2xl">
+        <section className="p-6 bg-slate-900 border border-slate-200 rounded-2xl">
           <h2 className="text-lg font-bold mb-3 text-white">{privacyT.SECTION5_TITLE[lang]}</h2>
           <p className="text-slate-200">
             {privacyT.SECTION5_TEXT[lang]}

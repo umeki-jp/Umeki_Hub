@@ -42,7 +42,7 @@ export default function PolicyPage() {
 
   return (
     <div className="max-w-3xl mx-auto py-10 px-4 text-slate-200">
-      <h1 className="text-3xl font-black mb-8 border-b border-slate-800 pb-4 text-white tracking-tight">
+      <h1 className="text-3xl font-black mb-8 border-b border-slate-200 pb-4 text-white tracking-tight">
         {policyT.TITLE[lang]}
       </h1>
       

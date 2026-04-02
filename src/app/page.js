@@ -46,7 +46,7 @@ export default function HomePage() {
     <div className="space-y-10 w-full">
       
       {/* 検索・フィルターセクション */}
-      <section className="bg-slate-900/50 p-6 rounded-2xl border border-slate-800 space-y-6">
+      <section className="bg-slate-900/50 p-6 rounded-2xl border border-slate-300 space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
           {/* 検索窓 */}
           <div className="space-y-2">
@@ -113,7 +113,7 @@ export default function HomePage() {
       {/* アプリ一覧グリッド */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredApps.map(app => (
-          <div key={app.id} className="group bg-slate-900 border border-slate-800 rounded-2xl p-6 hover:border-blue-500/50 transition-all duration-300 flex flex-col shadow-lg hover:shadow-blue-500/10">
+          <div key={app.id} className="group bg-slate-900 border border-slate-200 rounded-2xl p-6 hover:border-blue-500/50 transition-all duration-300 flex flex-col shadow-lg hover:shadow-blue-500/10">
             <div className="flex flex-wrap gap-2 mb-4">
               {app.categories.map(catId => (
                 <span key={catId} className="text-[9px] font-black px-2 py-0.5 bg-slate-800 rounded-md 2400 uppercase tracking-tighter border border-slate-700">

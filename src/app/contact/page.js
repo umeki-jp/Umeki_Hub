@@ -71,7 +71,7 @@ export default function ContactPage() {
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6 bg-slate-900 border border-slate-800 p-8 rounded-2xl shadow-2xl">
+      <form onSubmit={handleSubmit} className="space-y-6 bg-slate-900 border border-slate-200 p-8 rounded-2xl shadow-2xl">
         <div className="space-y-2">
           <label htmlFor="name" className="text-xs font-bold text-slate-200 uppercase tracking-widest ml-1">
             {contactT.LABEL_NAME[lang]}
@@ -80,7 +80,7 @@ export default function ContactPage() {
             type="text"
             id="name"
             required
-            className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all placeholder-slate-600"
+            className="w-full bg-slate-800 border border-slate-400 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all placeholder-slate-600"
             placeholder="Your Name"
           />
         </div>
@@ -93,7 +93,7 @@ export default function ContactPage() {
             type="email"
             id="email"
             required
-            className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all placeholder-slate-600"
+            className="w-full bg-slate-800 border border-slate-400 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all placeholder-slate-600"
             placeholder="example@mail.com"
           />
         </div>
@@ -106,7 +106,7 @@ export default function ContactPage() {
             id="message"
             required
             rows="5"
-            className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all resize-none placeholder-slate-600"
+            className="w-full bg-slate-800 border border-slate-400 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all resize-none placeholder-slate-600"
             placeholder={contactT.PLACEHOLDER_MESSAGE[lang]}
           ></textarea>
         </div>

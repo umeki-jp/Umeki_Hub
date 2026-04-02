@@ -9,13 +9,13 @@ export default function SettingsPage() {
 
   return (
     <div className="max-w-2xl mx-auto py-10 px-4">
-      <h1 className="text-3xl font-bold mb-8 border-b border-slate-800 pb-4 text-white">
+      <h1 className="text-3xl font-bold mb-8 border-b border-slate-200 pb-4 text-white">
         {t.NAV.SETTINGS[lang]}
       </h1>
 
       <div className="space-y-6">
         {/* 将来のログイン・アカウント連携用セクション */}
-        <section className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-sm opacity-60">
+        <section className="bg-slate-900 border border-slate-200 rounded-2xl p-6 shadow-sm opacity-60">
           <div className="flex items-center justify-between mb-4">
             <div>
               <h2 className="text-lg font-bold text-slate-200">Account Status</h2>
@@ -36,10 +36,10 @@ export default function SettingsPage() {
         </section>
 
         {/* アプリ設定（言語切り替え実装） */}
-        <section className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-sm">
+        <section className="bg-slate-900 border border-slate-200 rounded-2xl p-6 shadow-sm">
           <h2 className="text-lg font-bold mb-4 text-slate-200">General Settings</h2>
           <div className="space-y-4">
-            <div className="flex items-center justify-between py-2 border-b border-slate-800">
+            <div className="flex items-center justify-between py-2 border-b border-slate-200">
               <span className="text-sm text-slate-200">{lang === "ja" ? "表示モード" : "Display Mode"}</span>
               <span className="text-xs font-mono text-slate-200">System Default</span>
             </div>
