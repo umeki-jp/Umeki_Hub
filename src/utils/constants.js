@@ -18,9 +18,9 @@ export const APP_DICTS = {
 
   // プラットフォーム定義
   PLATFORMS: {
-    WEB: { id: "WEB", label: { ja: "Webアプリ", en: "Web App" } },
-    DESKTOP: { id: "DESKTOP", label: { ja: "デスクトップ", en: "Desktop" } },
-    MOBILE: { id: "MOBILE", label: { ja: "スマホアプリ", en: "Mobile App" } }
+    WEB: { id: "WEB", label: { ja: "Web App", en: "Web App" } },
+    DESKTOP: { id: "DESKTOP", label: { ja: "Desktop", en: "Desktop" } },
+    MOBILE: { id: "MOBILE", label: { ja: "Mobile App", en: "Mobile App" } }
   },
 
   // ライセンス形態
