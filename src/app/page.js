@@ -6,8 +6,10 @@ export default function HomePage() {
   const [apps, setApps] = useState([]);
 
   useEffect(() => {
-    // public/data/apps.json からアプリ一覧を取得
-    fetch('/data/apps.json')
+    // キャッシュを回避するためにタイムスタンプを追加
+    const cacheBuster = new Date().getTime();
+    
+    fetch(`/data/apps.json?t=${cacheBuster}`)
       .then(res => res.json())
       .then(data => setApps(data))
       .catch(err => console.error("データ読み込みエラー:", err));
@@ -19,7 +21,7 @@ export default function HomePage() {
       <section className="text-center py-12 bg-gradient-to-br from-slate-800 via-slate-900 to-black text-white rounded-3xl shadow-2xl px-4">
         <h2 className="text-4xl font-extrabold mb-4 tracking-tight">Project Launcher</h2>
         <p className="text-slate-400 max-w-2xl mx-auto text-lg">
-          個人開発と業務システムの改善に取り組むプロジェクトのポータルサイト。シンプルで再現性のあるアプリを継続的に開発中。
+          業務の最適化と属人化の排除をテーマに、業務システムを開発するプロジェクトのポータルサイト。
         </p>
       </section>
 

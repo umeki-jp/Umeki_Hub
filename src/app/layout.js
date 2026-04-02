@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata = {
   // ブラウザのタブや検索結果に表示されるタイトル
-  title: "Umeki_Hub | Official Portal", 
+  title: "Official Hub | Umeki_Apps", 
   
   // サイトの説明文
   description: "日本を拠点に、個人開発と業務システムの改善に取り組むプロジェクトのポータルサイト。シンプルで再現性のあるアプリを継続的に開発中。",
@@ -33,15 +33,14 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="ja">
-      <body className="bg-slate-50 text-slate-900 min-h-screen flex flex-col font-sans">
+      <body className="bg-slate-50 text-slate-900 min-h-screen flex flex-col font-sans antialiased">
         {/* ヘッダー: Next.jsのLinkコンポーネントを使用 */}
         <header className="bg-slate-900 text-white shadow-md p-4 sticky top-0 z-50">
           <div className="container mx-auto flex justify-between items-center">
             <Link href="/" className="text-xl font-bold flex items-center gap-2 hover:opacity-80 transition">
-              🌏 Official Portal
+              Umeki_Apps
             </Link>
             <nav className="flex gap-6 text-sm font-medium">
-              <Link href="/" className="hover:text-blue-400 transition">Dashboard</Link>
               <Link href="/profile" className="hover:text-blue-400 transition">Profile</Link>
               <Link href="/settings" className="hover:text-blue-400 transition">Settings</Link>
             </nav>
@@ -54,9 +53,9 @@ export default function RootLayout({ children }) {
         </main>
 
         {/* フッター: 外部サイトは <a>、内部リンクは <Link> を使い分け */}
-        <footer className="bg-slate-100 border-t border-slate-200 p-8 mt-10">
+        <footer className="bg-white border-t border-slate-200 p-8 mt-4">
           <div className="container mx-auto text-center space-y-4">
-            <div className="flex flex-wrap justify-center gap-6 text-sm text-slate-600 font-medium">
+            <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-slate-600 font-medium">
               <a 
                 href="https://buymeacoffee.com/u1344" 
                 target="_blank" 
@@ -70,7 +69,7 @@ export default function RootLayout({ children }) {
               <Link href="/contact" className="hover:text-blue-600 transition">お問い合わせ</Link>
             </div>
             <p className="text-xs text-slate-400">
-              &copy; {new Date().getFullYear()} U1344 / Official Portal. All rights reserved.
+              &copy; {new Date().getFullYear()} Umeki / Official Hub. All rights reserved.
             </p>
           </div>
         </footer>

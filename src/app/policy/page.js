@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 
 export default function PolicyPage() {
   return (
@@ -9,7 +10,7 @@ export default function PolicyPage() {
         <section>
           <h2 className="text-xl font-bold mb-3 text-slate-900">コンセプト</h2>
           <p>
-            当サイト「Official Portal」は、日本を拠点に、個人開発と業務システムの改善に取り組むプロジェクトのポータルサイトです。
+            当サイト「Umeki_Apps」は、日本を拠点に、個人開発と業務システムの改善に取り組むプロジェクトのポータルサイトです。
             
           </p>
         </section>
@@ -37,6 +38,15 @@ export default function PolicyPage() {
             本ポリシーは、必要に応じて予告なく変更することがあります。変更後のポリシーは、当サイトに掲載した時点から効力を生じるものとします。
           </p>
         </section>
+      </div>
+
+      <div className="mt-12 text-center">
+        <Link 
+          href="/" 
+          className="inline-flex items-center justify-center bg-slate-900 text-white font-medium py-3 px-8 rounded-full hover:bg-slate-800 transition-colors shadow-sm hover:shadow-md"
+        >
+          ダッシュボードに戻る
+        </Link>
       </div>
     </div>
   );

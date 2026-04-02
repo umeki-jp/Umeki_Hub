@@ -49,9 +49,12 @@ export default function SettingsPage() {
         </section>
       </div>
 
-      <div className="mt-10 text-center">
-        <Link href="/" className="text-sm text-slate-500 hover:text-blue-600">
-          ← ダッシュボードへ戻る
+      <div className="mt-12 text-center">
+        <Link 
+          href="/" 
+          className="inline-flex items-center justify-center bg-slate-900 text-white font-medium py-3 px-8 rounded-full hover:bg-slate-800 transition-colors shadow-sm hover:shadow-md"
+        >
+          ダッシュボードに戻る
         </Link>
       </div>
     </div>

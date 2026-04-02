@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 
 export default function PrivacyPage() {
   return (
@@ -47,6 +48,15 @@ export default function PrivacyPage() {
             個人情報の取り扱いに関するお問い合わせは、当サイトの「お問い合わせフォーム」よりご連絡ください。
           </p>
         </section>
+      </div>
+
+      <div className="mt-12 text-center">
+        <Link 
+          href="/" 
+          className="inline-flex items-center justify-center bg-slate-900 text-white font-medium py-3 px-8 rounded-full hover:bg-slate-800 transition-colors shadow-sm hover:shadow-md"
+        >
+          ダッシュボードに戻る
+        </Link>
       </div>
     </div>
   );

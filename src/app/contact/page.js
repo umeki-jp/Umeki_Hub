@@ -1,5 +1,6 @@
 "use client";
 import { useState } from 'react';
+import Link from "next/link";
 
 export default function ContactPage() {
   const [status, setStatus] = useState("");
@@ -84,6 +85,15 @@ export default function ContactPage() {
           {status === "sending" ? "送信中..." : "メッセージを送信する"}
         </button>
       </form>
+
+      <div className="mt-12 text-center">
+        <Link 
+          href="/" 
+          className="inline-flex items-center justify-center bg-slate-900 text-white font-medium py-3 px-8 rounded-full hover:bg-slate-800 transition-colors shadow-sm hover:shadow-md"
+        >
+          ダッシュボードに戻る
+        </Link>
+      </div>
     </div>
   );
 }

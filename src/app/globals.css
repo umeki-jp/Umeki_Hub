@@ -2,8 +2,9 @@
 @plugin "@tailwindcss/typography";
 
 :root {
+  /* 背景を常に白、文字を濃いグレーに固定 */
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #1e293b; /* Slate 800: 真っ黒より少し柔らかい高級感のある黒 */
 }
 
 @theme inline {
@@ -13,15 +14,14 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* @media (prefers-color-scheme: dark) ブロックを削除しました。
+   これにより、スマホがダークモード設定でも背景は白のまま維持されます。
+*/
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  /* よりモダンなフォント指定に変更（任意） */
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
 }

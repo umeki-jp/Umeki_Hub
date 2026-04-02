@@ -35,6 +35,15 @@ export default async function DocPage({ params }) {
           dangerouslySetInnerHTML={{ __html: docData.contentHtml }} 
         />
       </article>
+
+      <div className="mt-12 text-center">
+        <Link 
+          href="/" 
+          className="inline-flex items-center justify-center bg-slate-900 text-white font-medium py-3 px-8 rounded-full hover:bg-slate-800 transition-colors shadow-sm hover:shadow-md"
+        >
+          ダッシュボードに戻る
+        </Link>
+      </div>
     </div>
   );
 }
