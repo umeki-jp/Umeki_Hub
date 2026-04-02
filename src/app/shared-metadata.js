@@ -3,6 +3,10 @@ export const baseMetadata = {
   metadataBase: new URL("https://umeki-hub.vercel.app"),
   title: "Official Hub | Umeki_Apps",
   description: "業務効率・リスク管理Webアプリのポータルサイト",
+  icons: {
+    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
+    apple: [{ url: "/apple-touch-icon.png" }],
+  },
   openGraph: {
     title: "Official Hub | Umeki_Apps",
     description: "業務効率・リスク管理Webアプリのポータルサイト",
