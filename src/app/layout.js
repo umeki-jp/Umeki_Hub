@@ -2,6 +2,7 @@ import "./globals.css";
 import ClientLayout from "./ClientLayout";
 
 export const metadata = {
+  metadataBase: new URL("https://umeki-hub.vercel.app"),
   title: "Official Hub | Umeki_Apps",
   description: "日本を拠点に、個人開発と業務システムの改善に取り組むプロジェクトのポータルサイト。",
   openGraph: {

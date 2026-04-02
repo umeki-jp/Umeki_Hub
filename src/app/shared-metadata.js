@@ -1,5 +1,6 @@
 // src/app/shared-metadata.js
 export const baseMetadata = {
+  metadataBase: new URL("https://umeki-hub.vercel.app"),
   title: "Official Hub | Umeki_Apps",
   description: "業務効率・リスク管理Webアプリのポータルサイト",
   openGraph: {
