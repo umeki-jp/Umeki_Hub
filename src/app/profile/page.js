@@ -20,9 +20,11 @@ export default function ProfilePage() {
       NAME_LABEL: { ja: "事業者の名称", en: "Provider Name" },
       NAME_VALUE: { ja: "Umeki_Apps 運営", en: "Umeki_Apps Operations" },
       OWNER_LABEL: { ja: "代表者または責任者", en: "Representative" },
-      OWNER_VALUE: { ja: "梅木 久義 (Hisayoshi Umeki)", en: "Hisayoshi Umeki" },
+      OWNER_VALUE: { ja: "梅木 久義 (Hisayoshi Umeki)", en: "Hisayoshi Umeki" },      
       ADDRESS_LABEL: { ja: "所在地", en: "Address" },
       ADDRESS_VALUE: { ja: "請求により遅滞なく提供いたします", en: "Provided promptly upon request" },
+      TEL_LABEL: { ja: "電話番号", en: "Phone Number" },
+      TEL_VALUE: { ja: "請求により遅滞なく提供いたします", en: "Provided promptly upon request" },
       CONTACT_LABEL: { ja: "お問い合わせ先", en: "Contact" },
       CONTACT_FORM: { ja: "※お問い合わせフォームからも受付しております", en: "*Contact form is also available" },
       PRICE_LABEL: { ja: "販売価格", en: "Price" },
@@ -107,6 +109,7 @@ export default function ProfilePage() {
                 [profileT.LEGAL.NAME_LABEL[lang], profileT.LEGAL.NAME_VALUE[lang]],
                 [profileT.LEGAL.OWNER_LABEL[lang], profileT.LEGAL.OWNER_VALUE[lang]],
                 [profileT.LEGAL.ADDRESS_LABEL[lang], profileT.LEGAL.ADDRESS_VALUE[lang]],
+                [profileT.LEGAL.TEL_LABEL[lang], profileT.LEGAL.TEL_VALUE[lang]],
                 [profileT.LEGAL.CONTACT_LABEL[lang], (
                   <div key="contact">
                     <p>Email: umeki_apps@j-circon.jp</p>
