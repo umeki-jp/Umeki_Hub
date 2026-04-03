@@ -9,6 +9,7 @@ export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("ALL");
   const [selectedPlatforms, setSelectedPlatforms] = useState([]);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   
   // Contextから現在の言語設定を取得
   const { lang } = useLanguage();
@@ -46,74 +47,108 @@ export default function HomePage() {
     <div className="w-full relative flex flex-col">
       
       {/* 検索・フィルターセクションの固定ラッパー */}
-      {/* 背景をページと同色で完全に塗りつぶし、後続の要素が透けないようにする */}
-      <div className="sticky top-[64px] z-40 bg-slate-950 pt-6 pb-4 -mt-6 -mx-4 px-4 sm:mx-0 sm:px-0">
-        <section className="bg-gradient-to-br from-slate-800 to-slate-900 p-6 rounded-2xl border border-slate-700 shadow-2xl space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
-          {/* 検索窓 */}
-          <div className="space-y-2">
-            <label className="text-xs font-bold text-slate-200 uppercase tracking-widest">
-              {lang === "ja" ? "検索" : "Search"}
-            </label>
-            <input 
-              type="text"
-              placeholder={t.COMMON.SEARCH_PLACEHOLDER[lang]}
-              className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all text-white"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-          </div>
+      <div className="sticky top-[64px] z-40 bg-slate-950 pt-4 pb-4 -mt-6 -mx-4 px-4 sm:mx-0 sm:px-0">
 
-          {/* プラットフォーム選択 */}
-          <div className="hidden md:block space-y-2">
-            <label className="text-xs font-bold text-slate-200 uppercase tracking-widest">
-              {t.COMMON.PLATFORMS_LABEL[lang]}
-            </label>
-            <div className="flex gap-4 bg-slate-800 p-3 rounded-xl border border-slate-700">
-              {Object.values(APP_DICTS.PLATFORMS).map(plat => (
-                <label key={plat.id} className="flex items-center gap-2 cursor-pointer group">
-                  <input 
-                    type="checkbox"
-                    className="w-4 h-4 rounded border-slate-600 bg-slate-700 text-blue-600 focus:ring-blue-500"
-                    checked={selectedPlatforms.includes(plat.id)}
-                    onChange={() => togglePlatform(plat.id)}
-                  />
-                  <span className="text-sm font-medium group-hover:text-white transition-colors">
-                    {plat.label[lang]}
-                  </span>
-                </label>
-              ))}
-            </div>
-          </div>
+        {/* 折りたたみトグルバー */}
+        <div className="flex items-center justify-between gap-3">
+          <button
+            onClick={() => setIsSearchOpen(prev => !prev)}
+            className="flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800 border border-slate-700 hover:bg-slate-700 transition-all text-sm font-semibold text-slate-200"
+          >
+            {/* 検索アイコン */}
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" />
+            </svg>
+            {lang === "ja" ? "検索・フィルター" : "Search & Filter"}
+            {/* アクティブフィルター数バッジ */}
+            {(searchQuery || selectedCategory !== "ALL" || selectedPlatforms.length > 0) && (
+              <span className="ml-1 px-1.5 py-0.5 rounded-full bg-blue-600 text-white text-[10px] font-black">
+                {[searchQuery ? 1 : 0, selectedCategory !== "ALL" ? 1 : 0, selectedPlatforms.length].reduce((a, b) => a + b, 0)}
+              </span>
+            )}
+            {/* 展開アイコン */}
+            <svg xmlns="http://www.w3.org/2000/svg" className={`w-3.5 h-3.5 transition-transform duration-200 ${isSearchOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+
+          {/* 検索クエリのインライン表示（折りたたみ時） */}
+          {!isSearchOpen && searchQuery && (
+            <span className="text-xs text-slate-400 truncate max-w-[200px]">
+              &ldquo;{searchQuery}&rdquo;
+            </span>
+          )}
         </div>
 
-        {/* カテゴリ羅列 */}
-        <div className="hidden md:block space-y-2">
-          <label className="text-xs font-bold text-slate-200 uppercase tracking-widest">
-            {t.COMMON.CATEGORIES_LABEL[lang]}
-          </label>
-          <div className="flex flex-wrap gap-2">
-            <button 
-              onClick={() => setSelectedCategory("ALL")}
-              className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${selectedCategory === "ALL" ? 'bg-blue-600 text-white' : 'bg-slate-800 text-slate-200 hover:bg-slate-700'}`}
-            >
-              {t.COMMON.ALL[lang]}
-            </button>
-            {Object.values(APP_DICTS.CATEGORIES).map(cat => (
+        {/* 展開パネル */}
+        <div className={`overflow-hidden transition-all duration-300 ease-in-out ${isSearchOpen ? 'max-h-[600px] opacity-100 mt-3' : 'max-h-0 opacity-0 mt-0'}`}>
+          <section className="bg-gradient-to-br from-slate-800 to-slate-900 p-6 rounded-2xl border border-slate-700 shadow-2xl space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
+            {/* 検索窓 */}
+            <div className="space-y-2">
+              <label className="text-xs font-bold text-slate-200 uppercase tracking-widest">
+                {lang === "ja" ? "検索" : "Search"}
+              </label>
+              <input 
+                type="text"
+                placeholder={t.COMMON.SEARCH_PLACEHOLDER[lang]}
+                className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all text-white"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+
+            {/* プラットフォーム選択 */}
+            <div className="hidden md:block space-y-2">
+              <label className="text-xs font-bold text-slate-200 uppercase tracking-widest">
+                {t.COMMON.PLATFORMS_LABEL[lang]}
+              </label>
+              <div className="flex gap-4 bg-slate-800 p-3 rounded-xl border border-slate-700">
+                {Object.values(APP_DICTS.PLATFORMS).map(plat => (
+                  <label key={plat.id} className="flex items-center gap-2 cursor-pointer group">
+                    <input 
+                      type="checkbox"
+                      className="w-4 h-4 rounded border-slate-600 bg-slate-700 text-blue-600 focus:ring-blue-500"
+                      checked={selectedPlatforms.includes(plat.id)}
+                      onChange={() => togglePlatform(plat.id)}
+                    />
+                    <span className="text-sm font-medium group-hover:text-white transition-colors">
+                      {plat.label[lang]}
+                    </span>
+                  </label>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* カテゴリ羅列 */}
+          <div className="hidden md:block space-y-2">
+            <label className="text-xs font-bold text-slate-200 uppercase tracking-widest">
+              {t.COMMON.CATEGORIES_LABEL[lang]}
+            </label>
+            <div className="flex flex-wrap gap-2">
               <button 
-                key={cat.id}
-                onClick={() => setSelectedCategory(cat.id)}
-                className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${selectedCategory === cat.id ? 'bg-blue-600 text-white' : 'bg-slate-800 text-slate-200 hover:bg-slate-700'}`}
+                onClick={() => setSelectedCategory("ALL")}
+                className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${selectedCategory === "ALL" ? 'bg-blue-600 text-white' : 'bg-slate-800 text-slate-200 hover:bg-slate-700'}`}
               >
-                {cat.label[lang]}
+                {t.COMMON.ALL[lang]}
               </button>
-            ))}
-          </div>
-          </div>
-        </section>
+              {Object.values(APP_DICTS.CATEGORIES).map(cat => (
+                <button 
+                  key={cat.id}
+                  onClick={() => setSelectedCategory(cat.id)}
+                  className={`px-4 py-1.5 rounded-full text-xs font-bold transition-all ${selectedCategory === cat.id ? 'bg-blue-600 text-white' : 'bg-slate-800 text-slate-200 hover:bg-slate-700'}`}
+                >
+                  {cat.label[lang]}
+                </button>
+              ))}
+            </div>
+            </div>
+          </section>
+        </div>
 
         {/* 検索とグリッドの間の装飾的な区切り線 */}
-        <div className="h-px w-full bg-gradient-to-r from-transparent via-slate-600 to-transparent opacity-70 mt-8 mb-2"></div>
+        <div className="h-px w-full bg-gradient-to-r from-transparent via-slate-600 to-transparent opacity-70 mt-4 mb-2"></div>
       </div>
 
       {/* アプリ一覧グリッド */}
