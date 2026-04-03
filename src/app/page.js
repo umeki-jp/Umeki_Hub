@@ -43,6 +43,14 @@ export default function HomePage() {
     );
   };
 
+  const clearSearchQuery = () => {
+    setSearchQuery("");
+  };
+
+  const clearSelectedPlatforms = () => {
+    setSelectedPlatforms([]);
+  };
+
   return (
     <div className="w-full relative flex flex-col">
       
@@ -63,7 +71,7 @@ export default function HomePage() {
             {/* アクティブフィルター数バッジ */}
             {(searchQuery || selectedCategory !== "ALL" || selectedPlatforms.length > 0) && (
               <span className="ml-1 px-1.5 py-0.5 rounded-full bg-blue-600 text-white text-[10px] font-black">
-                {[searchQuery ? 1 : 0, selectedCategory !== "ALL" ? 1 : 0, selectedPlatforms.length].reduce((a, b) => a + b, 0)}
+                {filteredApps.length}
               </span>
             )}
             {/* 展開アイコン */}
@@ -89,13 +97,25 @@ export default function HomePage() {
               <label className="text-xs font-bold text-slate-200 uppercase tracking-widest">
                 {lang === "ja" ? "検索" : "Search"}
               </label>
-              <input 
-                type="text"
-                placeholder={t.COMMON.SEARCH_PLACEHOLDER[lang]}
-                className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all text-white"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
+              <div className="relative">
+                <input 
+                  type="text"
+                  placeholder={t.COMMON.SEARCH_PLACEHOLDER[lang]}
+                  className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 pr-12 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all text-white"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                {searchQuery && (
+                  <button
+                    type="button"
+                    onClick={clearSearchQuery}
+                    aria-label={lang === "ja" ? "検索をクリア" : "Clear search"}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full border border-slate-600 bg-slate-700 text-slate-300 hover:bg-slate-600 hover:text-white transition-all"
+                  >
+                    ×
+                  </button>
+                )}
+              </div>
             </div>
 
             {/* プラットフォーム選択 */}
@@ -103,9 +123,10 @@ export default function HomePage() {
               <label className="text-xs font-bold text-slate-200 uppercase tracking-widest">
                 {t.COMMON.PLATFORMS_LABEL[lang]}
               </label>
-              <div className="flex gap-4 bg-slate-800 p-3 rounded-xl border border-slate-700">
-                {Object.values(APP_DICTS.PLATFORMS).map(plat => (
-                  <label key={plat.id} className="flex items-center gap-2 cursor-pointer group">
+              <div className="flex min-h-[50px] items-center justify-between gap-4 bg-slate-800 px-3 py-3 rounded-xl border border-slate-700">
+                <div className="flex gap-4">
+                  {Object.values(APP_DICTS.PLATFORMS).map(plat => (
+                    <label key={plat.id} className="flex items-center gap-2 cursor-pointer group">
                     <input 
                       type="checkbox"
                       className="w-4 h-4 rounded border-slate-600 bg-slate-700 text-blue-600 focus:ring-blue-500"
@@ -115,8 +136,19 @@ export default function HomePage() {
                     <span className="text-sm font-medium group-hover:text-white transition-colors">
                       {plat.label[lang]}
                     </span>
-                  </label>
-                ))}
+                    </label>
+                  ))}
+                </div>
+                {selectedPlatforms.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={clearSelectedPlatforms}
+                    aria-label={lang === "ja" ? "プラットフォーム選択をクリア" : "Clear platform filters"}
+                    className="inline-flex items-center justify-center shrink-0 w-6 h-6 rounded-full border border-slate-600 bg-slate-700 text-slate-300 hover:bg-slate-600 hover:text-white transition-all text-sm"
+                  >
+                    ×
+                  </button>
+                )}
               </div>
             </div>
           </div>
