@@ -19,11 +19,27 @@ export async function POST(request) {
     }
 
     const { data, error } = await resend.emails.send({
-      from: 'Contact Form <onboarding@resend.dev>',
-      to: ['h.umeki@ymail.ne.jp'], // ←必ずResendに登録した自分のアドレスにする
-      subject: `【Portal】お問い合わせ：${name}様より`,
-      reply_to: email,
-      html: `<p>${message}</p>`,
+    // 1. 送り主は「固定」にする（信頼性のため）
+    from: 'Contact Form <onboarding@resend.dev>',
+    
+    // 2. 宛先は「自分のアドレス」にする（確実に受け取るため）
+    to: ['h.umeki@ymail.ne.jp'], 
+
+    // 3. 返信先を「ユーザーのアドレス」にする
+    // これにより、届いたメールにそのまま返信すればユーザーに届きます
+    reply_to: email, 
+
+    subject: `【Portal】お問い合わせ：${name}様より`,
+    html: `
+        <h2>新しいお問い合わせ</h2>
+        <hr />
+        <p><strong>送信者名:</strong> ${name}</p>
+        <p><strong>メールアドレス:</strong> ${email}</p>
+        <p><strong>内容:</strong></p>
+        <p style="white-space: pre-wrap;">${message}</p>
+        <hr />
+        <p>※このメールに返信すると、直接送信者に届きます。</p>
+    `,
     });
 
     if (error) {
