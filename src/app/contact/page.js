@@ -5,11 +5,10 @@ import { useLanguage } from "../../context/LanguageContext";
 import { APP_DICTS } from "../../utils/constants";
 
 export default function ContactPage() {
-  const [status, setStatus] = useState("");
+  const [status, setStatus] = useState(""); // "", "sending", "success", "error"
   const { lang } = useLanguage();
   const t = APP_DICTS.UI_TEXT;
 
-  // お問い合わせ専用の翻訳データ
   const contactT = {
     TITLE: { ja: "お問い合わせ", en: "Contact" },
     SUBTITLE: { 
@@ -27,17 +26,42 @@ export default function ContactPage() {
       ja: "メッセージは正常に送信されました。内容を確認し、必要に応じて折り返しご連絡いたします。", 
       en: "Your message has been sent successfully. We will review it and get back to you if necessary." 
     },
+    ERROR_TEXT: {
+      ja: "送信に失敗しました。時間をおいて再度お試しください。",
+      en: "Failed to send message. Please try again later."
+    },
     BTN_BACK_FORM: { ja: "フォームに戻る", en: "Back to form" }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus("sending");
-    
-    // シミュレーション
-    setTimeout(() => {
-      setStatus("success");
-    }, 1500);
+
+    // フォームデータの取得
+    const formData = new FormData(e.currentTarget);
+    const data = {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      message: formData.get("message"),
+      honeymoon: formData.get("honeymoon"), // スパム対策用
+    };
+
+    try {
+      const response = await fetch('/api/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        setStatus("success");
+      } else {
+        setStatus("error");
+      }
+    } catch (error) {
+      console.error("Submission error:", error);
+      setStatus("error");
+    }
   };
 
   if (status === "success") {
@@ -71,7 +95,16 @@ export default function ContactPage() {
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6 bg-slate-900 border border-slate-200 p-8 rounded-2xl shadow-2xl">
+      <form onSubmit={handleSubmit} className="space-y-6 bg-slate-900 border border-slate-800 p-8 rounded-2xl shadow-2xl">
+        {/* ハニーポット：人間には見えない隠しフィールド */}
+        <input 
+          type="text" 
+          name="honeymoon" 
+          className="hidden" 
+          tabIndex="-1" 
+          autoComplete="off" 
+        />
+
         <div className="space-y-2">
           <label htmlFor="name" className="text-xs font-bold text-slate-200 uppercase tracking-widest ml-1">
             {contactT.LABEL_NAME[lang]}
@@ -79,8 +112,9 @@ export default function ContactPage() {
           <input
             type="text"
             id="name"
+            name="name"
             required
-            className="w-full bg-slate-800 border border-slate-400 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all placeholder-slate-600"
+            className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all placeholder-slate-600"
             placeholder="Your Name"
           />
         </div>
@@ -92,8 +126,9 @@ export default function ContactPage() {
           <input
             type="email"
             id="email"
+            name="email"
             required
-            className="w-full bg-slate-800 border border-slate-400 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all placeholder-slate-600"
+            className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all placeholder-slate-600"
             placeholder="example@mail.com"
           />
         </div>
@@ -104,9 +139,10 @@ export default function ContactPage() {
           </label>
           <textarea
             id="message"
+            name="message"
             required
             rows="5"
-            className="w-full bg-slate-800 border border-slate-400 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all resize-none placeholder-slate-600"
+            className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all resize-none placeholder-slate-600"
             placeholder={contactT.PLACEHOLDER_MESSAGE[lang]}
           ></textarea>
         </div>
@@ -122,6 +158,12 @@ export default function ContactPage() {
         >
           {status === "sending" ? contactT.BTN_SENDING[lang] : contactT.BTN_SEND[lang]}
         </button>
+
+        {status === "error" && (
+          <p className="text-red-400 text-sm font-bold text-center">
+            {contactT.ERROR_TEXT[lang]}
+          </p>
+        )}
       </form>
 
       <div className="mt-16 text-center pb-10">
