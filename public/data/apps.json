@@ -26,5 +26,33 @@
     "url": "",
     "docPath": "/docs/keyLine",
     "updatedAt": "2026-04-01"
+  },
+  {
+    "id": "KeyLine2",
+    "title": "KeyLine",
+    "description": {
+      "ja": "日時業務ライン管理、研修・教育、引継ぎ、人員配置、BCPに対応。",
+      "en": "Supports daily business line management, training/education, handovers, personnel allocation, and BCP."
+    },
+    "categories": ["BUSINESS", "EDUCATION", "DATA"],
+    "platforms": ["WEB", "DESKTOP"],
+    "license": "Free / Pro",
+    "url": "",
+    "docPath": "/docs/keyLine",
+    "updatedAt": "2026-04-01"
+  },
+  {
+    "id": "KeyLine3",
+    "title": "KeyLine",
+    "description": {
+      "ja": "日時業務ライン管理、研修・教育、引継ぎ、人員配置、BCPに対応。",
+      "en": "Supports daily business line management, training/education, handovers, personnel allocation, and BCP."
+    },
+    "categories": ["BUSINESS", "EDUCATION", "DATA"],
+    "platforms": ["WEB", "DESKTOP"],
+    "license": "Free / Pro",
+    "url": "",
+    "docPath": "/docs/keyLine",
+    "updatedAt": "2026-04-01"
   }
 ]

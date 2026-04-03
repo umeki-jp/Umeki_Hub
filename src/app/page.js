@@ -43,11 +43,13 @@ export default function HomePage() {
   };
 
   return (
-    <div className="space-y-10 w-full">
+    <div className="w-full relative flex flex-col">
       
-      {/* 検索・フィルターセクション */}
-      <section className="bg-slate-900/50 p-6 rounded-2xl border border-slate-300 space-y-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
+      {/* 検索・フィルターセクションの固定ラッパー */}
+      {/* 背景をページと同色で完全に塗りつぶし、後続の要素が透けないようにする */}
+      <div className="sticky top-[64px] z-40 bg-slate-950 pt-6 pb-4 -mt-6 -mx-4 px-4 sm:mx-0 sm:px-0">
+        <section className="bg-gradient-to-br from-slate-800 to-slate-900 p-6 rounded-2xl border border-slate-700 shadow-2xl space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-end">
           {/* 検索窓 */}
           <div className="space-y-2">
             <label className="text-xs font-bold text-slate-200 uppercase tracking-widest">
@@ -63,7 +65,7 @@ export default function HomePage() {
           </div>
 
           {/* プラットフォーム選択 */}
-          <div className="space-y-2">
+          <div className="hidden md:block space-y-2">
             <label className="text-xs font-bold text-slate-200 uppercase tracking-widest">
               {t.COMMON.PLATFORMS_LABEL[lang]}
             </label>
@@ -86,7 +88,7 @@ export default function HomePage() {
         </div>
 
         {/* カテゴリ羅列 */}
-        <div className="space-y-2">
+        <div className="hidden md:block space-y-2">
           <label className="text-xs font-bold text-slate-200 uppercase tracking-widest">
             {t.COMMON.CATEGORIES_LABEL[lang]}
           </label>
@@ -107,11 +109,15 @@ export default function HomePage() {
               </button>
             ))}
           </div>
-        </div>
-      </section>
+          </div>
+        </section>
+
+        {/* 検索とグリッドの間の装飾的な区切り線 */}
+        <div className="h-px w-full bg-gradient-to-r from-transparent via-slate-600 to-transparent opacity-70 mt-8 mb-2"></div>
+      </div>
 
       {/* アプリ一覧グリッド */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10 pt-4 pb-20">
         {filteredApps.map(app => (
           <div key={app.id} className="group bg-slate-900 border border-slate-200 rounded-2xl p-6 hover:border-blue-500/50 transition-all duration-300 flex flex-col shadow-lg hover:shadow-blue-500/10">
             <div className="flex flex-wrap gap-2 mb-4">
@@ -133,16 +139,18 @@ export default function HomePage() {
               ))}
             </div>
 
-            <p className="text-sm text-slate-200 mb-8 leading-relaxed flex-grow">{app.description[lang]}</p>
+            <p className="hidden md:block text-sm text-slate-200 mb-8 leading-relaxed flex-grow">{app.description[lang]}</p>
+            {/* モバイル時はdescriptionが非表示なため、カードの高さを確保しつつ余白を詰める */}
+            <div className="block md:hidden flex-grow mb-2"></div>
             
-            <div className="flex flex-col gap-3 mt-auto">
+            <div className="flex flex-row md:flex-col gap-2 md:gap-3 mt-auto">
               {/* 利用URLがある場合のみ表示 */}
               {app.url ? (
                 <a 
                   href={app.url} 
                   target="_blank" 
                   rel="noopener noreferrer" 
-                  className="w-full text-center bg-blue-600 text-white py-3 rounded-xl text-sm font-bold hover:bg-blue-500 transition-all shadow-lg shadow-blue-900/20"
+                  className="flex-1 w-full flex items-center justify-center bg-blue-600 text-white py-2 md:py-3 rounded-xl text-xs md:text-sm font-bold hover:bg-blue-500 transition-all shadow-lg shadow-blue-900/20"
                 >
                   {t.COMMON.LAUNCH_APP[lang]}
                 </a>
@@ -154,7 +162,7 @@ export default function HomePage() {
                   href={app.docPath} 
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full text-center border border-slate-700 py-3 rounded-xl text-sm font-bold 200 hover:bg-slate-800 hover:text-white transition-all"
+                  className="flex-1 w-full flex items-center justify-center border border-slate-700 py-2 md:py-3 rounded-xl text-xs md:text-sm font-bold hover:bg-slate-800 hover:text-white transition-all"
                 >
                   {t.COMMON.DOCS[lang]}
                 </Link>

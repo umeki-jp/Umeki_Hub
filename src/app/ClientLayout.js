@@ -17,8 +17,8 @@ function LayoutContent({ children }) {
 
   return (
     <body className="bg-slate-950 text-slate-200 min-h-screen flex flex-col font-sans antialiased">
-      <header className="bg-slate-950 text-white border-b border-slate-800 p-4 sticky top-0 z-50">
-        <div className="container mx-auto flex justify-between items-center px-4">
+      <header className="h-[64px] bg-slate-950 text-white border-b border-slate-800 px-4 sticky top-0 z-50 flex items-center">
+        <div className="container mx-auto flex justify-between items-center px-4 w-full">
           <Link href="/" className="text-xl font-black tracking-tighter hover:text-blue-400 transition">
             Umeki_Apps
           </Link>
@@ -41,14 +41,14 @@ function LayoutContent({ children }) {
         </div>
       </header>
 
-      <main className="flex-grow container mx-auto px-4 py-8 flex flex-col justify-center bg-transparent">
+      <main className="flex-grow container mx-auto px-4 pt-6 pb-8 md:pb-28 flex flex-col bg-transparent z-10">
         <div className="w-full">
           {children}
         </div>
       </main>
 
-      <footer className="bg-slate-950 border-t border-slate-800 p-10 mt-auto">
-        <div className="container mx-auto text-center space-y-6">
+      <footer className="bg-slate-950 border-t border-slate-800 py-6 px-4 mt-auto w-full md:fixed md:bottom-0 md:left-0 md:z-40">
+        <div className="container mx-auto text-center space-y-4">
           <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-slate-200 font-medium">
             <a href="https://buymeacoffee.com/u1344" target="_blank" rel="noopener noreferrer" className="hover:text-white transition">
               {t.FOOTER.SUPPORT[lang]}
