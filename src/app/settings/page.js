@@ -11,10 +11,12 @@ export default function SettingsPage() {
 
   const [user, setUser] = useState(null);
   const [profileName, setProfileName] = useState("");
+  const [loading, setLoading] = useState(true);
   const supabase = createClient();
 
   useEffect(() => {
     const checkUser = async () => {
+      setLoading(true);
       const { data: { user } } = await supabase.auth.getUser();
       setUser(user);
 
@@ -30,9 +32,18 @@ export default function SettingsPage() {
           setProfileName(data.display_name);
         }
       }
+      setLoading(false);
     };
     checkUser();
   }, [supabase]);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <p className="text-white">Loading...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-2xl mx-auto py-10 px-4">
