@@ -36,7 +36,9 @@ export const APP_DICTS = {
     NAV: {
       DASHBOARD: { ja: "ダッシュボード", en: "Dashboard" },
       PROFILE: { ja: "Profile", en: "Profile" },
-      SETTINGS: { ja: "Settings", en: "Settings" }
+      SETTINGS: { ja: "Settings", en: "Settings" },
+      LOGIN: { ja: "Login", en: "Login" },
+      LOGOUT: { ja: "Logput", en: "Logout" }
     },
     COMMON: {
       SEARCH_PLACEHOLDER: { ja: "キーワードで検索...", en: "Search by keyword..." },

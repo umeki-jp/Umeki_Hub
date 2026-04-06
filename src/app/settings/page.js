@@ -1,11 +1,24 @@
 "use client";
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useLanguage } from "../../context/LanguageContext";
 import { APP_DICTS } from "../../utils/constants";
+import { createClient } from "../../utils/supabase/client";
 
 export default function SettingsPage() {
   const { lang, changeLanguage } = useLanguage();
   const t = APP_DICTS.UI_TEXT;
+
+  const [user, setUser] = useState(null);
+  const supabase = createClient();
+
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
+    };
+    checkUser();
+  }, [supabase]);
 
   return (
     <div className="max-w-2xl mx-auto py-10 px-4">
@@ -15,24 +28,36 @@ export default function SettingsPage() {
 
       <div className="space-y-6">
         {/* 将来のログイン・アカウント連携用セクション */}
-        <section className="bg-slate-900 border border-slate-200 rounded-2xl p-6 shadow-sm opacity-60">
+        <section className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-sm">
           <div className="flex items-center justify-between mb-4">
             <div>
               <h2 className="text-lg font-bold text-slate-200">Account Status</h2>
-              <p className="text-sm text-slate-200">
-                {lang === "ja" ? "現在、ゲストユーザーとして利用中です。" : "You are currently using as a guest user."}
+              <p className="text-sm text-slate-400">
+                {user 
+                  ? (lang === "ja" ? `ログイン中: ${user.email}` : `Logged in as: ${user.email}`)
+                  : (lang === "ja" ? "現在、ゲストユーザーとして利用中です。" : "You are currently using as a guest user.")
+                }
               </p>
             </div>
-            <span className="px-3 py-1 bg-slate-800 text-slate-200 text-xs font-bold rounded-full">
-              Coming Soon
+            <span className={`px-3 py-1 text-xs font-bold rounded-full ${user ? 'bg-green-900/30 text-green-400' : 'bg-slate-800 text-slate-400'}`}>
+              {user ? 'Active' : 'Guest'}
             </span>
           </div>
-          <button 
-            disabled 
-            className="w-full bg-slate-800 text-slate-200 py-3 rounded-xl font-bold cursor-not-allowed"
-          >
-            {lang === "ja" ? "ログイン / アカウント作成（準備中）" : "Login / Create Account (Coming Soon)"}
-          </button>
+          
+          {user ? (
+            <form action="/auth/signout" method="post">
+              <button className="w-full bg-slate-800 hover:bg-red-900/30 hover:text-red-400 text-slate-200 py-3 rounded-xl font-bold transition">
+                {lang === "ja" ? "ログアウト" : "Sign Out"}
+              </button>
+            </form>
+          ) : (
+            <Link 
+              href="/register" 
+              className="block w-full bg-blue-600 hover:bg-blue-500 text-white text-center py-3 rounded-xl font-bold transition"
+            >
+              {lang === "ja" ? "ログイン / アカウント作成" : "Login / Create Account"}
+            </Link>
+          )}
         </section>
 
         {/* アプリ設定（言語切り替え実装） */}

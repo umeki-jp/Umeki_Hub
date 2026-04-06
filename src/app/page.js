@@ -34,7 +34,7 @@ export default function HomePage() {
       
       return matchesQuery && matchesCategory && matchesPlatform;
     });
-  }, [apps, searchQuery, selectedCategory, selectedPlatforms]);
+  }, [apps, searchQuery, selectedCategory, selectedPlatforms, lang]);
 
   // プラットフォームのチェックボックス切り替え
   const togglePlatform = (id) => {

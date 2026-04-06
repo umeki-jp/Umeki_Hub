@@ -1,7 +1,9 @@
 "use client";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { LanguageProvider, useLanguage } from "../context/LanguageContext";
 import { APP_DICTS } from "../utils/constants";
+import { createClient } from "../utils/supabase/client";
 
 export default function ClientLayout({ children }) {
   return (
@@ -15,6 +17,22 @@ function LayoutContent({ children }) {
   const { lang, changeLanguage } = useLanguage();
   const t = APP_DICTS.UI_TEXT;
 
+  // --- 認証状態の管理を追加 ---
+  const [user, setUser] = useState(null);
+  const supabase = createClient();
+
+  useEffect(() => {
+  const checkUser = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+    setUser(user);
+  };
+  checkUser();
+
+  
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
+  // -------------------------
+
   return (
     <body className="bg-slate-950 text-slate-200 min-h-screen flex flex-col font-sans antialiased">
       <header className="h-[64px] bg-slate-950 text-white border-b border-slate-800 px-4 sticky top-0 z-50 flex items-center">
@@ -23,19 +41,30 @@ function LayoutContent({ children }) {
             Umeki_Apps
           </Link>
           <nav className="flex items-center gap-6 text-sm font-bold">
+            {/* 言語切替ボタン */}
             <button
               type="button"
               onClick={() => changeLanguage(lang === "ja" ? "en" : "ja")}
               className="px-2 py-1 rounded-md border border-slate-600 text-slate-200 hover:text-white hover:border-slate-400 transition"
-              aria-label={lang === "ja" ? "Switch language to English" : "言語を日本語に切り替え"}
             >
               {lang === "ja" ? "JA/EN" : "EN/JA"}
             </button>
+
+            {/* Profile（開発者情報：既存の役割） */}
             <Link href="/profile" className="hover:text-blue-400 transition">
               {t.NAV.PROFILE[lang]}
             </Link>
-            <Link href="/settings" className="hover:text-blue-400 transition">
-              {t.NAV.SETTINGS[lang]}
+
+            {/* Settings（ログイン状態の表示と設定へのリンク） */}
+            <Link href="/settings" className="flex items-center gap-2 hover:text-blue-400 transition">
+              {user ? (
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                  <span className="text-blue-400">{t.NAV.SETTINGS[lang]}</span>
+                </div>
+              ) : (
+                <span>{t.NAV.SETTINGS[lang]}</span>
+              )}
             </Link>
           </nav>
         </div>
