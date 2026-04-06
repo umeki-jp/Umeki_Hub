@@ -35,6 +35,30 @@ export default function SettingsPage() {
       setLoading(false);
     };
     checkUser();
+    // 認証状態の変化も監視
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+      if (session?.user) {
+        // ユーザーが切り替わった場合もプロフィール名を再取得
+        supabase
+          .from('profiles')
+          .select('display_name')
+          .eq('id', session.user.id)
+          .single()
+          .then(({ data }) => {
+            if (data && data.display_name) {
+              setProfileName(data.display_name);
+            } else {
+              setProfileName("");
+            }
+          });
+      } else {
+        setProfileName("");
+      }
+    });
+    return () => {
+      listener?.subscription.unsubscribe();
+    };
   }, [supabase]);
 
   if (loading) {
