@@ -29,21 +29,28 @@ export async function middleware(request) {
     }
   )
 
-  // セッションをリフレッシュする
-  await supabase.auth.getUser()
+  // 1. セッション（ユーザー情報）を取得
+  const { data: { user } } = await supabase.auth.getUser()
+
+  // 2. ガードしたいパス（設定画面など）を定義
+  const protectedPaths = ['/settings', '/profile']
+  const isProtectedPath = protectedPaths.some(path => 
+    request.nextUrl.pathname.startsWith(path)
+  )
+
+  // 3. 未ログインでガード対象にアクセスした場合、登録画面へ飛ばす
+  if (isProtectedPath && !user) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/register'
+    // ログイン後に元のページに戻れるよう、クエリパラメータを付けても良いですが、まずはシンプルにリダイレクト
+    return NextResponse.redirect(url)
+  }
 
   return response
 }
 
 export const config = {
   matcher: [
-    /*
-     * 以下のパス以外すべてにミドルウェアを適用
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - *.svg, *.png, *.jpg (image files)
-     */
     '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 }

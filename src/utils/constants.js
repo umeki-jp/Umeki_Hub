@@ -31,7 +31,7 @@ export const APP_DICTS = {
     INTERNAL: "Internal"
   },
 
-  // --- 追加：ページ共通のUI文言 ---
+  // --- ページ共通のUI文言 ---
   UI_TEXT: {
     NAV: {
       DASHBOARD: { ja: "ダッシュボード", en: "Dashboard" },
@@ -56,6 +56,29 @@ export const APP_DICTS = {
       POLICY: { ja: "サイトポリシー", en: "Site Policy" },
       PRIVACY: { ja: "プライバシーポリシー", en: "Privacy Policy" },
       CONTACT: { ja: "お問い合わせ", en: "Contact" }
+    },
+    AUTH: {
+      CONFIRM_TITLE: { ja: "メールをご確認ください", en: "Check your email" },
+      CONFIRM_MSG: { ja: "承認用メールを送信しました。メール内のリンクをクリックして登録を完了させてください。", en: "A confirmation link has been sent to your email address. Please click the link to complete your registration." },
+      BACK_TO_LOGIN: { ja: "ログイン画面に戻る", en: "Back to Login" },
+    },
+    ACCOUNT: {
+      TITLE: { ja: "アカウント情報", en: "Account Information" },
+      DISPLAY_NAME: { ja: "表示名", en: "Display Name" },
+      AVATAR: { ja: "アイコン画像", en: "Profile Image" },
+      PLAN: { ja: "現在のプラン", en: "Current Plan" },
+      NOTIFICATIONS: { ja: "通知設定", en: "Notifications" },
+      NOTIFY_NEWS: { ja: "お知らせを受け取る", en: "Receive news" },
+      NOTIFY_MAG: { ja: "メールマガジンを購読する", en: "Subscribe to newsletter" },
+      SAVE: { ja: "設定を保存", en: "Save Changes" },
+      CHANGE_PW: { ja: "パスワードを変更", en: "Change Password" },
+      DELETE_ACCOUNT: { ja: "アカウントを削除", en: "Delete Account" },
+      DELETE_CONFIRM: { ja: "本当にアカウントを削除しますか？この操作は取り消せません。", en: "Are you sure you want to delete your account? This action cannot be undone." },
+      PW_NEW: { ja: "新しいパスワード", en: "New Password" },
+      PW_CONFIRM: { ja: "新しいパスワード（確認）", en: "Confirm New Password" },
+      PW_UPDATE_BTN: { ja: "パスワードを更新", en: "Update Password" },
+      PW_ERROR_MISMATCH: { ja: "パスワードが一致しません", en: "Passwords do not match" },
+      PW_SUCCESS: { ja: "パスワードを更新しました", en: "Password updated successfully" },
     }
   }
 };

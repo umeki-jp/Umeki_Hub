@@ -6,20 +6,17 @@ import { redirect } from 'next/navigation'
 import { headers } from 'next/headers'
 
 export async function signup(formData) {
-  // ここに await を追加
   const supabase = await createClient()
 
-  const data = {
-    email: formData.get('email'),
-    password: formData.get('password'),
-  }
+  const email = formData.get('email')
+  const password = formData.get('password')
 
-  const { error } = await supabase.auth.signUp(data)
+  const { error } = await supabase.auth.signUp({ email, password })
 
   if (error) {
     console.error('Signup error:', error.message)
-    // エラー時はリダイレクトせず、ひとまずログ出力のみで確認
-    return 
+    // --- 【変更箇所】メッセージを付けて register 画面へ戻す ---
+    redirect(`/register?error=${encodeURIComponent(error.message)}`)
   }
 
   revalidatePath('/', 'layout')
@@ -28,8 +25,6 @@ export async function signup(formData) {
 
 export async function signInWithGoogle() {
   const supabase = await createClient()
-  
-  // ログイン後の戻り先URL（本番環境ではVercelのURLにする必要があります）
   const origin = (await headers()).get('origin')
 
   const { data, error } = await supabase.auth.signInWithOAuth({
@@ -41,30 +36,29 @@ export async function signInWithGoogle() {
 
   if (error) {
     console.error('Google login error:', error.message)
-    return
+    // --- 【変更箇所】ログイン画面へ戻す（エラー付き） ---
+    redirect(`/register?error=${encodeURIComponent(error.message)}`)
   }
 
   if (data.url) {
-    redirect(data.url) // Googleのログインページへ飛ばす
+    redirect(data.url)
   }
 }
 
 export async function login(formData) {
   const supabase = await createClient();
 
-  const data = {
-    email: formData.get('email'),
-    password: formData.get('password'),
-  };
+  const email = formData.get('email');
+  const password = formData.get('password');
 
-  const { error } = await supabase.auth.signInWithPassword(data);
+  const { error } = await supabase.auth.signInWithPassword({ email, password });
 
   if (error) {
     console.error('Login error:', error.message);
-    // 実際にはエラーを表示する仕組みが必要
-    return;
+    // --- 【変更箇所】メッセージを付けて register 画面へ戻す ---
+    redirect(`/register?error=${encodeURIComponent(error.message)}`)
   }
 
   revalidatePath('/', 'layout');
-  redirect('/'); // ログイン成功後にトップへ
+  redirect('/'); 
 }

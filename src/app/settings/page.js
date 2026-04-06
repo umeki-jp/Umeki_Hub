@@ -10,12 +10,26 @@ export default function SettingsPage() {
   const t = APP_DICTS.UI_TEXT;
 
   const [user, setUser] = useState(null);
+  const [profileName, setProfileName] = useState("");
   const supabase = createClient();
 
   useEffect(() => {
     const checkUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       setUser(user);
+
+      if (user) {
+        // --- 追加：profilesテーブルから display_name を取得 ---
+        const { data } = await supabase
+          .from('profiles')
+          .select('display_name')
+          .eq('id', user.id)
+          .single();
+        
+        if (data && data.display_name) {
+          setProfileName(data.display_name);
+        }
+      }
     };
     checkUser();
   }, [supabase]);
@@ -34,7 +48,9 @@ export default function SettingsPage() {
               <h2 className="text-lg font-bold text-slate-200">Account Status</h2>
               <p className="text-sm text-slate-400">
                 {user 
-                  ? (lang === "ja" ? `ログイン中: ${user.email}` : `Logged in as: ${user.email}`)
+                  ? (lang === "ja" 
+                      ? `ログイン中: ${profileName || user.email}` // 名前があれば名前、なければメール
+                      : `Logged in as: ${profileName || user.email}`)
                   : (lang === "ja" ? "現在、ゲストユーザーとして利用中です。" : "You are currently using as a guest user.")
                 }
               </p>
@@ -45,11 +61,21 @@ export default function SettingsPage() {
           </div>
           
           {user ? (
-            <form action="/auth/signout" method="post">
-              <button className="w-full bg-slate-800 hover:bg-red-900/30 hover:text-red-400 text-slate-200 py-3 rounded-xl font-bold transition">
-                {lang === "ja" ? "ログアウト" : "Sign Out"}
-              </button>
-            </form>
+            <div className="space-y-3">
+              {/* --- アカウント詳細設定への導線 --- */}
+              <Link 
+                href="/settings/account"
+                className="block w-full bg-blue-600 hover:bg-blue-500 text-white text-center py-3 rounded-xl font-bold transition"
+              >
+                {lang === "ja" ? "アカウント情報を編集・登録" : "Edit Account Information"}
+              </Link>
+
+              <form action="/auth/signout" method="post">
+                <button className="w-full bg-slate-800 hover:bg-red-900/30 hover:text-red-400 text-slate-200 py-3 rounded-xl font-bold transition">
+                  {lang === "ja" ? "ログアウト" : "Sign Out"}
+                </button>
+              </form>
+            </div>
           ) : (
             <Link 
               href="/register" 
