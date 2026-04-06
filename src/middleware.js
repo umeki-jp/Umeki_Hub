@@ -30,7 +30,7 @@ export async function middleware(request) {
   )
 
   // 1. セッション（ユーザー情報）を取得
-  const { data: { user } } = await supabase.auth.getUser()
+  const { data: { session } } = await supabase.auth.getUser()
 
 
   // --- settings, profileページは未ログインでもアクセス可能に変更 ---
