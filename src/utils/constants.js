@@ -35,8 +35,8 @@ export const APP_DICTS = {
   UI_TEXT: {
     NAV: {
       DASHBOARD: { ja: "ダッシュボード", en: "Dashboard" },
-      PROFILE: { ja: "Profile", en: "Profile" },
-      SETTINGS: { ja: "Settings", en: "Settings" },
+      PROFILE: { ja: "開発者", en: "Profile" },
+      SETTINGS: { ja: "設定", en: "Settings" },
       LOGIN: { ja: "Login", en: "Login" },
       LOGOUT: { ja: "Logput", en: "Logout" }
     },

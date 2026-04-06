@@ -1,11 +1,23 @@
 "use client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useLanguage } from "../../context/LanguageContext";
 import { APP_DICTS } from "../../utils/constants";
 
 export default function SettingsPageClient({ user, profileName }) {
+
   const { lang, changeLanguage } = useLanguage();
   const t = APP_DICTS.UI_TEXT;
+  const a = APP_DICTS.UI_TEXT.ACCOUNT;
+  const router = useRouter();
+
+  // 未ログイン時はログイン画面へ遷移
+  const handleAccountClick = (e) => {
+    if (!user) {
+      e.preventDefault();
+      router.push("/register");
+    }
+  };
 
   return (
     <div className="max-w-2xl mx-auto py-10 px-4">
@@ -14,11 +26,13 @@ export default function SettingsPageClient({ user, profileName }) {
       </h1>
 
       <div className="space-y-6">
-        {/* 将来のログイン・アカウント連携用セクション */}
-        <section className="bg-slate-900 border border-slate-800 rounded-2xl p-6 shadow-sm">
-          <div className="flex items-center justify-between mb-4">
+        {/* アカウントステータス枠 */}
+        <section className="bg-slate-900 border border-slate-200 rounded-2xl p-6 shadow-sm">
+          <h2 className="text-lg font-bold mb-4 text-slate-200">
+            {lang === "ja" ? "アカウントステータス" : "Account Status"}
+          </h2>
+          <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-lg font-bold text-slate-200">Account Status</h2>
               <p className="text-sm text-slate-400">
                 {user
                   ? lang === "ja"
@@ -35,36 +49,89 @@ export default function SettingsPageClient({ user, profileName }) {
               {user ? "Active" : "Guest"}
             </span>
           </div>
-
-          {user ? (
-            <div className="space-y-3">
-              {/* --- アカウント詳細設定への導線 --- */}
+          {/* 未ログイン時はログイン/アカウント作成ボタン、ログイン時はログアウトボタンを表示 */}
+          {!user ? (
+            <div className="mt-4">
               <Link
-                href="/settings/account"
+                href="/register"
                 className="block w-full bg-blue-600 hover:bg-blue-500 text-white text-center py-3 rounded-xl font-bold transition"
               >
-                {lang === "ja" ? "アカウント情報を編集・登録" : "Edit Account Information"}
+                {lang === "ja" ? "ログイン / アカウント作成" : "Login / Create Account"}
               </Link>
-
-              <form action="/auth/signout" method="post">
-                <button className="w-full bg-slate-800 hover:bg-red-900/30 hover:text-red-400 text-slate-200 py-3 rounded-xl font-bold transition">
-                  {lang === "ja" ? "ログアウト" : "Sign Out"}
-                </button>
-              </form>
             </div>
           ) : (
-            <Link
-              href="/register"
-              className="block w-full bg-blue-600 hover:bg-blue-500 text-white text-center py-3 rounded-xl font-bold transition"
-            >
-              {lang === "ja" ? "ログイン / アカウント作成" : "Login / Create Account"}
-            </Link>
+            <form action="/auth/signout" method="post" className="mt-4">
+              <button className="block w-full bg-blue-600 hover:bg-blue-500 text-white text-center py-3 rounded-xl font-bold transition">
+                {lang === "ja" ? "ログアウト" : "Sign Out"}
+              </button>
+            </form>
           )}
+        </section>
+
+        {/* アカウント情報編集枠（常に表示） */}
+        <section className="bg-slate-900 border border-slate-200 rounded-2xl p-6 shadow-sm">
+        <h2 className="text-lg font-bold mb-4 text-slate-200">
+            {a.TITLE[lang]}
+        </h2>
+
+        <div className="mb-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+
+            {/* 表示名 */}
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 w-full">
+            <span className="text-sm text-slate-400 sm:w-[120px] w-full shrink-0 pt-2 sm:pt-0">
+                {a.DISPLAY_NAME[lang]}
+            </span>
+
+            <input
+                type="text"
+                value={
+                user
+                    ? profileName || user.email
+                    : lang === "ja"
+                    ? "未ログイン"
+                    : "Not logged in"
+                }
+                disabled
+                readOnly
+                className="flex-1 w-full bg-slate-800 text-slate-300 rounded-md px-3 py-2 border border-slate-700 cursor-not-allowed min-w-0"
+            />
+            </div>
+
+            {/* プラン */}
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 w-full">
+            <span className="text-sm text-slate-400 sm:w-[120px] w-full shrink-0 pt-2 sm:pt-0">
+                {a.PLAN[lang]}
+            </span>
+
+            <input
+                type="text"
+                value={user ? "free" : "-"}
+                disabled
+                readOnly
+                className="flex-1 w-full bg-slate-800 text-slate-300 rounded-md px-3 py-2 border border-slate-700 cursor-not-allowed min-w-0"
+            />
+            </div>
+
+            </div>
+        </div>
+
+        <Link
+            href="/settings/account"
+            className="block w-full bg-blue-600 hover:bg-blue-500 text-white text-center py-3 rounded-xl font-bold transition"
+            onClick={handleAccountClick}
+        >
+            {lang === "ja"
+            ? "アカウント情報を編集・登録"
+            : "Edit Account Information"}
+        </Link>
         </section>
 
         {/* アプリ設定（言語切り替え実装） */}
         <section className="bg-slate-900 border border-slate-200 rounded-2xl p-6 shadow-sm">
-          <h2 className="text-lg font-bold mb-4 text-slate-200">General Settings</h2>
+          <h2 className="text-lg font-bold mb-4 text-slate-200">
+            {lang === "ja" ? "一般設定" : "General Settings"}
+          </h2>
           <div className="space-y-4">
             <div className="flex items-center justify-between py-2 border-b border-slate-200">
               <span className="text-sm text-slate-200">{lang === "ja" ? "表示モード" : "Display Mode"}</span>
@@ -94,8 +161,8 @@ export default function SettingsPageClient({ user, profileName }) {
         <section className="p-4 bg-blue-950/20 border border-blue-900/30 rounded-xl">
           <p className="text-xs text-blue-400 leading-relaxed">
             <strong>Info:</strong> {lang === "ja"
-              ? "この画面は将来の拡張用です。Portal_LinkMasterとの連携や、J-CIRCONの有料プラン（拡張BCPなど）のライセンス管理機能を統合する際の入口となります。"
-              : "This screen is for future expansion. It will be the entry point for integration with Portal_LinkMaster and license management for J-CIRCON."}
+              ? "この画面は将来の拡張用です。Portal_LinkMaster始め各アプリとの連携や、プランのライセンス管理の入口となります。"
+              : "This screen is for future expansion. It will serve as the entry point for linking with various apps including Portal_LinkMaster and managing plan licenses."}
           </p>
         </section>
       </div>

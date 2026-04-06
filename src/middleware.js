@@ -32,19 +32,8 @@ export async function middleware(request) {
   // 1. セッション（ユーザー情報）を取得
   const { data: { user } } = await supabase.auth.getUser()
 
-  // 2. ガードしたいパス（設定画面など）を定義
-  const protectedPaths = ['/settings', '/profile']
-  const isProtectedPath = protectedPaths.some(path => 
-    request.nextUrl.pathname.startsWith(path)
-  )
 
-  // 3. 未ログインでガード対象にアクセスした場合、登録画面へ飛ばす
-  if (isProtectedPath && !user) {
-    const url = request.nextUrl.clone()
-    url.pathname = '/register'
-    // ログイン後に元のページに戻れるよう、クエリパラメータを付けても良いですが、まずはシンプルにリダイレクト
-    return NextResponse.redirect(url)
-  }
+  // --- settings, profileページは未ログインでもアクセス可能に変更 ---
 
   return response
 }

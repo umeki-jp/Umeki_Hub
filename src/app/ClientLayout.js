@@ -41,15 +41,7 @@ function LayoutContent({ children }) {
             Umeki_Apps
           </Link>
           <nav className="flex items-center gap-6 text-sm font-bold">
-            {/* 言語切替ボタン */}
-            <button
-              type="button"
-              onClick={() => changeLanguage(lang === "ja" ? "en" : "ja")}
-              className="px-2 py-1 rounded-md border border-slate-600 text-slate-200 hover:text-white hover:border-slate-400 transition"
-            >
-              {lang === "ja" ? "JA/EN" : "EN/JA"}
-            </button>
-
+            
             {/* Profile（開発者情報：既存の役割） */}
             <Link href="/profile" className="hover:text-blue-400 transition">
               {t.NAV.PROFILE[lang]}
@@ -66,6 +58,16 @@ function LayoutContent({ children }) {
                 <span>{t.NAV.SETTINGS[lang]}</span>
               )}
             </Link>
+
+            {/* 言語切替ボタン */}
+            <button
+              type="button"
+              onClick={() => changeLanguage(lang === "ja" ? "en" : "ja")}
+              className="px-2 py-1 rounded-md border border-slate-600 text-slate-200 hover:text-white hover:border-slate-400 transition"
+            >
+              {lang === "ja" ? "JA/EN" : "EN/JA"}
+            </button>
+
           </nav>
         </div>
       </header>
