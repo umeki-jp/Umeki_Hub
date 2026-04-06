@@ -64,22 +64,23 @@ export default function RegisterPage() {
           </div>
         </div>
 
-        {/* Googleボタン：保存いただいた画像を使用 */}
+        {/* Googleボタン：formNoValidateを追加してバリデーションをスキップ */}
         <button
-            formAction={signInWithGoogle}
-            className="w-full transition flex items-center justify-center p-0 overflow-hidden rounded-md border border-transparent hover:opacity-90"
-            >
-            <Image
-                src={isLogin
-                ? "/assets/images/web_light_sq_SI@3x.png"
-                : "/assets/images/web_light_sq_SU@3x.png"
-                }
-                alt="Google"
-                width={400} 
-                height={100}
-                className="w-full h-auto object-contain"
-            />
-            </button>
+        formAction={signInWithGoogle}
+        formNoValidate // ← これを追加！
+        className="w-full transition flex items-center justify-center p-0 overflow-hidden rounded-md border border-transparent hover:opacity-90"
+        >
+        <Image
+            src={isLogin
+            ? "/assets/images/web_light_sq_SI@3x.png"
+            : "/assets/images/web_light_sq_SU@3x.png"
+            }
+            alt="Google"
+            width={400} 
+            height={100}
+            className="w-full h-auto object-contain"
+        />
+        </button>
 
         {/* モード切り替えボタン */}
         <div className="mt-8 text-center text-sm">
