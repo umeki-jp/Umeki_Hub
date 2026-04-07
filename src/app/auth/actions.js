@@ -87,3 +87,50 @@ export async function login(formData) {
   revalidatePath('/', 'layout');
   redirect('/'); 
 }
+
+export async function requestAccountDeletion() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    throw new Error('You must be logged in to request account deletion.');
+  }
+
+  // 論理削除フラグを追加（profilesテーブルの is_deletedとdeletion_requested_at）
+  const { error } = await supabase.from('profiles').update({
+    is_deleted: true,
+    deletion_requested_at: new Date().toISOString()
+  }).eq('id', user.id);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  // セッション破棄
+  await supabase.auth.signOut();
+  
+  revalidatePath('/', 'layout');
+  return { success: true };
+}
+
+export async function cancelAccountDeletion() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    throw new Error('You must be logged in to cancel account deletion.');
+  }
+
+  // 論理削除フラグを解除
+  const { error } = await supabase.from('profiles').update({
+    is_deleted: false,
+    deletion_requested_at: null
+  }).eq('id', user.id);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  revalidatePath('/settings/account');
+  return { success: true };
+}

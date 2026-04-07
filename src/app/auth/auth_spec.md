@@ -7,8 +7,15 @@
 | `id` | ユーザーID | `uuid (PK, auth.users引用)` | (自動取得) | (非表示) |
 | `display_name` | 名前 | `text` | 1〜20文字 / 記号不可 | `maxLength: 30`, 必須 |
 | `updated_at` | 更新日時 | `timestamp with time zone` | `new Date()` | (非表示) |
+| `is_deleted` | 削除申請フラグ | `boolean DEFAULT false` | `true` (削除申請時) | (非表示) |
+| `deletion_requested_at` | 削除申請日時 | `timestamp with time zone` | `new Date()` (申請時) | (非表示) |
 
-## 2. 認証情報 (Supabase Auth)
+## 2. アカウント削除ポリシー（論理削除）
+- ユーザー画面からのアカウント削除は「完全削除」ではなく「削除申請（論理削除）」として扱う。
+- プロフィールテーブルの `is_deleted` を `true` にし、`deletion_requested_at` にタイムスタンプを保存する。
+- 30日間は復元サポート期間とする。30日経過後、バッチ処理等により物理削除を実行する。
+
+## 3. 認証情報 (Supabase Auth)
 
 | 項目 | ルール | バリデーション場所 | エラーメッセージ |
 | :--- | :--- | :--- | :--- |

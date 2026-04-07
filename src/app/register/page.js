@@ -92,21 +92,22 @@ function RegisterPageInner() {
         <label className="block text-sm font-bold text-slate-300">
             {lang === 'ja' ? 'パスワード (8文字以上)' : 'Password (8+ characters)'}
         </label>
-        <div className="relative flex items-center">
+        <div className="relative flex items-center w-full">
             <input 
             name="password"
             type={showPassword ? "text" : "password"}
             required
             minLength={8}
             value={password}
-            onChange={(e) => { setPassword(e.target.value); clearError(); }}
+            onChange={(e) => setPassword(e.target.value)}
             className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500 pr-20"
             />
             {/* 表示・非表示の切り替えテキストボタン */}
             <button 
             type="button"
+            style={{ right: '8px' }}
             onClick={() => setShowPassword(!showPassword)}
-            className="absolute right-3 px-3 py-1 text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg transition-colors border border-slate-700"
+            className="absolute px-3 py-1 text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg transition-colors border border-slate-700"
             >
             {showPassword 
                 ? (lang === 'ja' ? '非表示' : 'Hide') 
@@ -128,13 +129,13 @@ function RegisterPageInner() {
             {lang === 'ja' ? 'パスワード（確認用）' : 'Confirm Password'}
             </label>
             {/* relative と flex を追加してボタンを枠内に配置可能にする */}
-            <div className="relative flex items-center">
+            <div className="relative flex items-center w-full">
             <input 
                 name="confirm_password"
                 type={showPassword ? "text" : "password"}
                 required
                 value={confirmPassword}
-                onChange={(e) => { setConfirmPassword(e.target.value); clearError(); }}
+                onChange={(e) => setConfirmPassword(e.target.value)}
                 className={`w-full bg-slate-900 border rounded-xl px-4 py-3 text-white outline-none transition pr-20 ${
                 confirmPassword && password !== confirmPassword ? 'border-red-500' : 'border-slate-800 focus:border-blue-500'
                 }`}
@@ -142,8 +143,9 @@ function RegisterPageInner() {
             {/* 枠内に配置したテキスト切り替えボタン */}
             <button 
                 type="button"
+                style={{ right: '8px' }}
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 px-3 py-1 text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg transition-colors border border-slate-700"
+                className="absolute px-3 py-1 text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg transition-colors border border-slate-700"
             >
                 {showPassword 
                 ? (lang === 'ja' ? '非表示' : 'Hide') 

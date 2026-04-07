@@ -16,6 +16,8 @@ export default async function SettingsPage() {
       .single();
     if (data && data.display_name) {
       profileName = data.display_name;
+    } else if (user.user_metadata && user.user_metadata.display_name) {
+      profileName = user.user_metadata.display_name;
     }
   }
 
