@@ -55,7 +55,7 @@ export default function AccountSettingsPage() {
     }
   }, [showSavedMessage]);
 
-  // --- 【追加】パスワード更新の実処理 ---
+  // --- パスワード更新の実処理 ---
   const handleUpdatePassword = async () => {
     if (newPassword !== confirmPassword) {
       alert(text.PW_ERROR_MISMATCH[lang]);
@@ -130,6 +130,7 @@ export default function AccountSettingsPage() {
               type="text" 
               value={displayName}
               onChange={(e) => setDisplayName(e.target.value)}
+              maxLength={30}
               className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-white focus:border-blue-500 outline-none transition"
             />
           </div>
