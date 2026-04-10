@@ -86,3 +86,6 @@ export const APP_DICTS = {
 // ヘルパー関数
 export const CATEGORY_OPTIONS = Object.values(APP_DICTS.CATEGORIES);
 export const PLATFORM_OPTIONS = Object.values(APP_DICTS.PLATFORMS);
+
+// レイアウト定数
+export const HEADER_HEIGHT = 64;

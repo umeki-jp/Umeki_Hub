@@ -1,59 +1,85 @@
-// src/app/api/send/route.js
-
 import { Resend } from 'resend';
 import { NextResponse } from 'next/server';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
+
+// HTMLメール内のXSSを防ぐためエスケープ
+function escapeHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+// メールアドレスの簡易バリデーション
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
 
 export async function POST(request) {
   try {
     const body = await request.json();
     const { name, email, message, honeymoon } = body;
 
-    console.log("--- API Request Received ---");
-    console.log("API Key exists:", !!process.env.RESEND_API_KEY);
-
+    // スパム対策：ハニーポット
     if (honeymoon) {
-      console.log("Honeymoon trap triggered");
       return NextResponse.json({ error: "Spam detected" }, { status: 400 });
     }
 
+    // 入力バリデーション
+    if (!name || typeof name !== 'string' || name.trim().length === 0) {
+      return NextResponse.json({ error: "名前を入力してください" }, { status: 400 });
+    }
+    if (name.trim().length > 100) {
+      return NextResponse.json({ error: "名前が長すぎます" }, { status: 400 });
+    }
+    if (!email || !isValidEmail(email)) {
+      return NextResponse.json({ error: "有効なメールアドレスを入力してください" }, { status: 400 });
+    }
+    if (!message || typeof message !== 'string' || message.trim().length === 0) {
+      return NextResponse.json({ error: "メッセージを入力してください" }, { status: 400 });
+    }
+    if (message.trim().length > 5000) {
+      return NextResponse.json({ error: "メッセージが長すぎます（5000文字以内）" }, { status: 400 });
+    }
+
+    const toEmail = process.env.CONTACT_TO_EMAIL;
+    if (!toEmail) {
+      console.error("CONTACT_TO_EMAIL is not set");
+      return NextResponse.json({ error: "Server configuration error" }, { status: 500 });
+    }
+
     const { data, error } = await resend.emails.send({
-    // 1. 送り主は「固定」にする（信頼性のため）
-    from: 'Contact Form <onboarding@resend.dev>',
-    
-    // 2. 宛先は「自分のアドレス」にする（確実に受け取るため）
-    to: ['h.umeki@ymail.ne.jp'], 
-
-    // 3. 返信先を「ユーザーのアドレス」にする
-    // これにより、届いたメールにそのまま返信すればユーザーに届きます
-    reply_to: email, 
-
-    subject: `【Portal】お問い合わせ：${name}様より`,
-    html: `
+      // 送り主は固定（信頼性のため）
+      from: 'Contact Form <onboarding@resend.dev>',
+      // 宛先は環境変数から取得
+      to: [toEmail],
+      // 返信先をユーザーのアドレスに設定
+      reply_to: email,
+      subject: `【Portal】お問い合わせ：${escapeHtml(name)}様より`,
+      html: `
         <h2>新しいお問い合わせ</h2>
         <hr />
-        <p><strong>送信者名:</strong> ${name}</p>
-        <p><strong>メールアドレス:</strong> ${email}</p>
+        <p><strong>送信者名:</strong> ${escapeHtml(name)}</p>
+        <p><strong>メールアドレス:</strong> ${escapeHtml(email)}</p>
         <p><strong>内容:</strong></p>
-        <p style="white-space: pre-wrap;">${message}</p>
+        <p style="white-space: pre-wrap;">${escapeHtml(message)}</p>
         <hr />
         <p>※このメールに返信すると、直接送信者に届きます。</p>
-    `,
+      `,
     });
 
     if (error) {
-      // ここが重要！Resendからの具体的なエラーをターミナルに出す
       console.error("Resend API Error:", error);
-      return NextResponse.json({ error }, { status: 500 });
+      return NextResponse.json({ error: "メール送信に失敗しました" }, { status: 500 });
     }
 
-    console.log("Email sent successfully:", data);
     return NextResponse.json({ success: true, data });
 
   } catch (error) {
-    // 予期せぬエラー（ネットワークエラー等）をターミナルに出す
     console.error("Critical Server Error:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: "サーバーエラーが発生しました" }, { status: 500 });
   }
 }

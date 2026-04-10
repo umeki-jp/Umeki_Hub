@@ -1,17 +1,19 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useLanguage } from '@/context/LanguageContext';
 import { APP_DICTS } from '@/utils/constants';
 import Link from 'next/link';
 import { createClient } from "@/utils/supabase/client";
 import { requestAccountDeletion, cancelAccountDeletion } from '@/app/auth/actions';
+import PasswordInput from '@/app/components/PasswordInput';
+import ConfirmModal from '@/app/components/ConfirmModal';
 
 export default function AccountSettingsPage() {
   const { lang } = useLanguage();
   const text = APP_DICTS.UI_TEXT.ACCOUNT;
   const navText = APP_DICTS.UI_TEXT.NAV;
-  const supabase = createClient();
+  const supabase = useMemo(() => createClient(), []);
 
   const [showSavedMessage, setShowSavedMessage] = useState(false);
   const [displayName, setDisplayName] = useState(""); 
@@ -21,15 +23,13 @@ export default function AccountSettingsPage() {
   });
   const [loading, setLoading] = useState(true);
 
-  // --- パスワード変更用の状態管理 ---
   const [isChangingPw, setIsChangingPw] = useState(false);
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
 
-  // --- 退会申請用の状態管理 ---
   const [isDeleted, setIsDeleted] = useState(false);
   const [deletionRequestedAt, setDeletionRequestedAt] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -65,8 +65,20 @@ export default function AccountSettingsPage() {
     }
   }, [showSavedMessage]);
 
+  const passwordComplexity = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/;
+
   // --- パスワード更新の実処理 ---
   const handleUpdatePassword = async () => {
+    if (newPassword.length < 8) {
+      alert(lang === 'ja' ? "パスワードは8文字以上必要です" : "Password must be at least 8 characters");
+      return;
+    }
+    if (!passwordComplexity.test(newPassword)) {
+      alert(lang === 'ja'
+        ? "パスワードには大文字・数字・記号をそれぞれ1文字以上含めてください"
+        : "Password must contain at least one uppercase letter, number, and special character");
+      return;
+    }
     if (newPassword !== confirmPassword) {
       alert(text.PW_ERROR_MISMATCH[lang]);
       return;
@@ -107,12 +119,11 @@ export default function AccountSettingsPage() {
   };
 
   const handleDelete = async () => {
-    const confirmMessage = lang === 'ja'
-      ? "アカウントの削除申請を行いますか？\n（30日間はデータの復元が可能ですが、その後完全に消去されます）"
-      : "Are you sure you want to request account deletion?\n(Your data can be restored within 30 days, after which it will be permanently deleted.)";
-      
-    const confirmed = window.confirm(confirmMessage);
-    if (confirmed) {
+    setShowDeleteModal(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    setShowDeleteModal(false);
       try {
         setLoading(true);
         const result = await requestAccountDeletion();
@@ -121,12 +132,10 @@ export default function AccountSettingsPage() {
         }
       } catch (error) {
         setLoading(false);
-        // 万が一 NEXT_REDIRECT が飛んできても握りつぶす
         if (!error.message.includes('NEXT_REDIRECT')) {
           alert(lang === 'ja' ? "削除申請に失敗しました: " + error.message : "Failed to request deletion: " + error.message);
         }
       }
-    }
   };
 
   const handleCancelDeletion = async () => {
@@ -169,10 +178,39 @@ export default function AccountSettingsPage() {
       : `Your account will be permanently deleted on ${localeDate} (in about ${diffDays} days).`;
   };
 
-  if (loading) return <div className="text-white p-10 text-center">Loading...</div>;
+  if (loading) return (
+    <div className="max-w-2xl mx-auto py-12 px-6 space-y-8 animate-pulse">
+      <div className="h-8 bg-slate-800 rounded-xl w-48" />
+      <div className="bg-slate-950 p-8 rounded-3xl border border-slate-900 space-y-6">
+        <div className="h-4 bg-slate-800 rounded w-24" />
+        <div className="h-12 bg-slate-800 rounded-xl" />
+        <div className="h-4 bg-slate-800 rounded w-32" />
+        <div className="h-8 bg-slate-800 rounded-full w-20" />
+        <div className="h-px bg-slate-800" />
+        <div className="h-4 bg-slate-800 rounded w-20" />
+        <div className="h-6 bg-slate-800 rounded w-48" />
+        <div className="h-6 bg-slate-800 rounded w-56" />
+        <div className="h-px bg-slate-800" />
+        <div className="h-12 bg-slate-800 rounded-xl" />
+      </div>
+    </div>
+  );
 
   return (
     <div className="max-w-2xl mx-auto py-12 px-6 relative">
+
+      <ConfirmModal
+        isOpen={showDeleteModal}
+        title={lang === 'ja' ? 'アカウントを削除しますか？' : 'Delete your account?'}
+        message={lang === 'ja'
+          ? "削除申請を行いますか？\n30日間はデータの復元が可能ですが、その後完全に消去されます。"
+          : "Are you sure you want to request account deletion?\nYour data can be restored within 30 days, after which it will be permanently deleted."}
+        confirmLabel={lang === 'ja' ? '削除申請する' : 'Request Deletion'}
+        cancelLabel={lang === 'ja' ? 'キャンセル' : 'Cancel'}
+        onConfirm={handleDeleteConfirm}
+        onCancel={() => setShowDeleteModal(false)}
+        danger
+      />
       
       {showSavedMessage && (
         <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50">
@@ -265,66 +303,25 @@ export default function AccountSettingsPage() {
             <div className="bg-slate-900 p-6 rounded-2xl border border-blue-900/30 space-y-4">
               
               {/* 新しいパスワード入力欄 */}
-              <div className="space-y-2">
-                <div className="relative flex items-center w-full">
-                  <input 
-                    type={showPassword ? "text" : "password"}
-                    autoComplete="new-password"
-                    placeholder={text.PW_NEW[lang]} 
-                    value={newPassword}
-                    minLength={8}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-2 text-white outline-none focus:border-blue-500 pr-20 transition"
-                  />
-                  <button 
-                    type="button"
-                    style={{ right: '8px' }}
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute px-3 py-1 text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg transition-colors border border-slate-700"
-                  >
-                    {showPassword 
-                      ? (lang === 'ja' ? '非表示' : 'Hide') 
-                      : (lang === 'ja' ? '表示' : 'Show')
-                    }
-                  </button>
-                </div>
-                <p className="text-xs text-slate-500 italic">
-                  {lang === 'ja' ? '※8文字以上の英数字を推奨します' : '*Minimum 8 characters required'}
-                </p>
-              </div>
+              <PasswordInput
+                name="new-password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                placeholder={text.PW_NEW[lang]}
+                showHint
+                autoComplete="new-password"
+                minLength={8}
+              />
 
               {/* 確認用パスワード入力欄 */}
-              <div className="space-y-2">
-                <div className="relative flex items-center w-full">
-                  <input 
-                    type={showPassword ? "text" : "password"}
-                    autoComplete="new-password"
-                    placeholder={text.PW_CONFIRM[lang]} 
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    className={`w-full bg-slate-950 border rounded-lg px-4 py-2 text-white outline-none transition pr-20 ${
-                      confirmPassword && newPassword !== confirmPassword ? 'border-red-500' : 'border-slate-800 focus:border-blue-500'
-                    }`}
-                  />
-                  <button 
-                    type="button"
-                    style={{ right: '8px' }}
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute px-3 py-1 text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg transition-colors border border-slate-700"
-                  >
-                    {showPassword 
-                      ? (lang === 'ja' ? '非表示' : 'Hide') 
-                      : (lang === 'ja' ? '表示' : 'Show')
-                    }
-                  </button>
-                </div>
-                {/* 一致していない場合の警告 */}
-                {confirmPassword && newPassword !== confirmPassword && (
-                  <p className="text-xs text-red-500 font-bold">
-                    {lang === 'ja' ? 'パスワードが一致しません' : 'Passwords do not match'}
-                  </p>
-                )}
-              </div>
+              <PasswordInput
+                name="confirm-password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                placeholder={text.PW_CONFIRM[lang]}
+                compareValue={newPassword}
+                autoComplete="new-password"
+              />
 
               <div className="flex gap-2 pt-2">
                 <button onClick={handleUpdatePassword} className="flex-1 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-lg transition">{text.PW_UPDATE_BTN[lang]}</button>

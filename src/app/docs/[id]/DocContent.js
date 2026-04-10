@@ -69,7 +69,7 @@ export default function DocContent({ id, docData }) {
                         alt={`Step ${index + 1}`}
                         fill
                         className="object-contain p-1 md:p-2 transition-transform duration-700 group-hover:scale-[1.01]"
-                        sizes="(max-w-768px) 100vw, 800px"
+                        sizes="(max-width: 768px) 100vw, 800px"
                       />
                     </div>
                   )}

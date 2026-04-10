@@ -6,14 +6,14 @@ import { signup, login, signInWithGoogle } from '../auth/actions';
 import { useLanguage } from '../../context/LanguageContext';
 import Image from "next/image";
 import { useSearchParams } from 'next/navigation';
+import PasswordInput from '../components/PasswordInput';
 
 function RegisterPageInner() {
   const [isLogin, setIsLogin] = useState(true); 
   const { lang } = useLanguage();
-  const [showPassword, setShowPassword] = useState(false); // パスワード表示フラグ
-  const [password, setPassword] = useState("");           // パスワード入力値
-  const [confirmPassword, setConfirmPassword] = useState(""); // 確認用パスワード入力値
-  const [displayName, setDisplayName] = useState("");     // 名前入力値
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [displayName, setDisplayName] = useState("");
   const searchParams = useSearchParams();
   const error = searchParams.get('error');
 
@@ -27,17 +27,26 @@ function RegisterPageInner() {
     switchBtn: { ja: isLogin ? "新規登録" : "ログイン", en: isLogin ? "Sign Up" : "Sign In" },
     or: { ja: "または", en: "Or continue with" }
   };
+  const passwordComplexity = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/;
+
   const handleSubmit = (e) => {
     // 新規登録モードの時だけバリデーションを実行
     if (!isLogin) {
-      if (password !== confirmPassword) {
-        e.preventDefault(); // サーバーへの送信を中止
-        alert(lang === 'ja' ? "パスワードが一致しません" : "Passwords do not match");
+      if (password.length < 8) {
+        e.preventDefault();
+        alert(lang === 'ja' ? "パスワードは8文字以上必要です" : "Password must be at least 8 characters");
         return;
       }
-      if (password.length < 8) {
-        e.preventDefault(); // サーバーへの送信を中止
-        alert(lang === 'ja' ? "パスワードは8文字以上必要です" : "Password must be at least 8 characters");
+      if (!passwordComplexity.test(password)) {
+        e.preventDefault();
+        alert(lang === 'ja'
+          ? "パスワードには大文字・数字・記号をそれぞれ1文字以上含めてください"
+          : "Password must contain at least one uppercase letter, number, and special character");
+        return;
+      }
+      if (password !== confirmPassword) {
+        e.preventDefault();
+        alert(lang === 'ja' ? "パスワードが一致しません" : "Passwords do not match");
         return;
       }
     }
@@ -89,78 +98,33 @@ function RegisterPageInner() {
         </div>
         {/* パスワード入力（1回目） */}
         <div className="space-y-2">
-        <label className="block text-sm font-bold text-slate-300">
+          <label className="block text-sm font-bold text-slate-300">
             {lang === 'ja' ? 'パスワード (8文字以上)' : 'Password (8+ characters)'}
-        </label>
-        <div className="relative flex items-center w-full">
-            <input 
+          </label>
+          <PasswordInput
             name="password"
-            type={showPassword ? "text" : "password"}
-            required
-            minLength={8}
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full bg-slate-900 border border-slate-800 rounded-xl px-4 py-3 text-white outline-none focus:border-blue-500 pr-20"
-            />
-            {/* 表示・非表示の切り替えテキストボタン */}
-            <button 
-            type="button"
-            style={{ right: '8px' }}
-            onClick={() => setShowPassword(!showPassword)}
-            className="absolute px-3 py-1 text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg transition-colors border border-slate-700"
-            >
-            {showPassword 
-                ? (lang === 'ja' ? '非表示' : 'Hide') 
-                : (lang === 'ja' ? '表示' : 'Show')
-            }
-            </button>
-        </div>
-        {!isLogin && (
-            <p className="text-xs text-slate-500 italic">
-            {lang === 'ja' ? '※8文字以上の英数字を推奨します' : '*Minimum 8 characters required'}
-            </p>
-        )}
+            showHint={!isLogin}
+            required
+            minLength={8}
+          />
         </div>
 
         {/* パスワード確認（2回目：新規登録時のみ表示） */}
         {!isLogin && (
-        <div className="space-y-2">
+          <div className="space-y-2">
             <label className="block text-sm font-bold text-slate-300">
-            {lang === 'ja' ? 'パスワード（確認用）' : 'Confirm Password'}
+              {lang === 'ja' ? 'パスワード（確認用）' : 'Confirm Password'}
             </label>
-            {/* relative と flex を追加してボタンを枠内に配置可能にする */}
-            <div className="relative flex items-center w-full">
-            <input 
-                name="confirm_password"
-                type={showPassword ? "text" : "password"}
-                required
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className={`w-full bg-slate-900 border rounded-xl px-4 py-3 text-white outline-none transition pr-20 ${
-                confirmPassword && password !== confirmPassword ? 'border-red-500' : 'border-slate-800 focus:border-blue-500'
-                }`}
+            <PasswordInput
+              name="confirm_password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              compareValue={password}
+              required
             />
-            {/* 枠内に配置したテキスト切り替えボタン */}
-            <button 
-                type="button"
-                style={{ right: '8px' }}
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute px-3 py-1 text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg transition-colors border border-slate-700"
-            >
-                {showPassword 
-                ? (lang === 'ja' ? '非表示' : 'Hide') 
-                : (lang === 'ja' ? '表示' : 'Show')
-                }
-            </button>
-            </div>
-            
-            {/* 一致していない場合の警告（現状維持） */}
-            {confirmPassword && password !== confirmPassword && (
-            <p className="text-xs text-red-500 font-bold">
-                {lang === 'ja' ? 'パスワードが一致しません' : 'Passwords do not match'}
-            </p>
-            )}
-        </div>
+          </div>
         )}
         <button 
         type="submit"

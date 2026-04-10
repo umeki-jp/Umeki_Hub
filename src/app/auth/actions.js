@@ -25,7 +25,12 @@ export async function signup(formData) {
   if (!password || password.length < 8) {
     redirect(`/register?error=${encodeURIComponent("Password must be at least 8 characters")}`)
   }
-  // 4. パスワード一致確認（追加）
+  // 4. パスワード複雑性チェック（大文字・数字・記号を含む）
+  const passwordComplexity = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/;
+  if (!passwordComplexity.test(password)) {
+    redirect(`/register?error=${encodeURIComponent("Password must contain uppercase, number, and special character")}`)
+  }
+  // 5. パスワード一致確認（追加）
   if (password !== confirmPassword) {
     redirect(`/register?error=${encodeURIComponent("Passwords do not match")}`)
   }

@@ -102,7 +102,8 @@ export default function ContactPage() {
           name="honeymoon" 
           className="hidden" 
           tabIndex="-1" 
-          autoComplete="off" 
+          autoComplete="off"
+          aria-hidden="true"
         />
 
         <div className="space-y-2">

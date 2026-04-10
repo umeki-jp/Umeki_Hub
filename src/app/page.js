@@ -2,7 +2,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { useLanguage } from '../context/LanguageContext';
-import { APP_DICTS } from '../utils/constants';
+import { APP_DICTS, HEADER_HEIGHT } from '../utils/constants';
 
 export default function HomePage() {
   const [apps, setApps] = useState([]);
@@ -16,8 +16,7 @@ export default function HomePage() {
   const t = APP_DICTS.UI_TEXT;
 
   useEffect(() => {
-    const cacheBuster = new Date().getTime();
-    fetch(`/data/apps.json?t=${cacheBuster}`)
+    fetch('/data/apps.json')
       .then(res => res.json())
       .then(data => setApps(data))
       .catch(err => console.error("データ読み込みエラー:", err));
@@ -55,7 +54,7 @@ export default function HomePage() {
     <div className="w-full relative flex flex-col">
       
       {/* 検索・フィルターセクションの固定ラッパー */}
-      <div className="sticky top-[64px] z-40 bg-slate-950 pt-4 pb-4 -mt-6 -mx-4 px-4 sm:mx-0 sm:px-0">
+      <div style={{ top: HEADER_HEIGHT }} className="sticky z-40 bg-slate-950 pt-4 pb-4 -mt-6 -mx-4 px-4 sm:mx-0 sm:px-0">
 
         {/* 折りたたみトグルバー */}
         <div className="flex items-center justify-between gap-3">

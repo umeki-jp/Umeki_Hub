@@ -1,8 +1,8 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { LanguageProvider, useLanguage } from "../context/LanguageContext";
-import { APP_DICTS } from "../utils/constants";
+import { APP_DICTS, HEADER_HEIGHT } from "../utils/constants";
 import { createClient } from "../utils/supabase/client";
 
 export default function ClientLayout({ children }) {
@@ -19,7 +19,8 @@ function LayoutContent({ children }) {
 
   // --- 認証状態の管理を追加 ---
   const [user, setUser] = useState(null);
-  const supabase = createClient();
+  // レンダリング毎に新しいインスタンスが生成されないようメモ化
+  const supabase = useMemo(() => createClient(), []);
 
   useEffect(() => {
   const checkUser = async () => {
@@ -35,7 +36,7 @@ function LayoutContent({ children }) {
 
   return (
     <body className="bg-slate-950 text-slate-200 min-h-screen flex flex-col font-sans antialiased">
-      <header className="h-[64px] bg-slate-950 text-white border-b border-slate-800 px-4 sticky top-0 z-50 flex items-center">
+      <header style={{ height: HEADER_HEIGHT }} className="bg-slate-950 text-white border-b border-slate-800 px-4 sticky top-0 z-50 flex items-center">
         <div className="container mx-auto flex justify-between items-center px-4 w-full">
           <Link href="/" className="text-xl font-black tracking-tighter hover:text-blue-400 transition">
             Umeki_Apps
