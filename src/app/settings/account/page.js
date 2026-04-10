@@ -21,13 +21,13 @@ export default function AccountSettingsPage() {
   });
   const [loading, setLoading] = useState(true);
 
-  // --- 【追加】パスワード変更用の状態管理 ---
+  // --- パスワード変更用の状態管理 ---
   const [isChangingPw, setIsChangingPw] = useState(false);
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  // --- 【追加】退会申請用の状態管理 ---
+  // --- 退会申請用の状態管理 ---
   const [isDeleted, setIsDeleted] = useState(false);
   const [deletionRequestedAt, setDeletionRequestedAt] = useState(null);
 
